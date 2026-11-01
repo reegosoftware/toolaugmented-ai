@@ -1,75 +1,71 @@
 # Best Practices for Training Data
 
-## 1. Planning
-- Planning, aka the preceding text, is crucial for the model to keep track of its next action.
-- Provide clear intermediate explanations or logical connections between sequential tool uses, so the process flow is never confusing.
+How to write each training sample. For **what** to cover (coverage matrix, edge cases, dataset mix, quality gates), see [The Recipe](recipe.md). For training itself, see the [Fine-Tuning Guide](fine-tuning.md).
 
-## 2. Sample record
+## 1. Plan before acting
 
-The record below shows a parallel call, a partial failure, and a grounded final answer.
+- Before multi-step calls, the assistant writes a **short plan** (the "preceding text"). It keeps the model from losing track of the next action.
+- Between sequential calls, add brief logical connections: _"Dr. Lee is free on Tuesday at 10:00. I'll book that."_
+- Keep plans short and factual. They are part of the training target.
+
+## 2. Write realistic tool outputs
+
+- **Structured, not prose** ([Tool Output](best-practices-for-tool-output.md)).
+- **Consistent across turns**: the same ids, prices, and states everywhere in the conversation.
+- **Errors carry hints**, so the next assistant turn can show the recovery.
+- Vary them: empty, partial, large, slow, and failing results all occur in production.
+
+## 3. Write grounded assistant turns
+
+- Every argument value comes from the **user**, the **system prompt**, or an **earlier tool result**. Never from nowhere.
+- Final answers **interpret** the results (compare, summarize, format) instead of repeating JSON.
+- Follow the system prompt's tone and policies in every turn, including the failure turns.
+
+## 4. Keep the format exact
+
+- Every tool call has a unique id, and exactly one result with the same id follows it.
+- The arguments validate against the schema.
+- Use the same message format your training framework and chat template expect ([Fine-Tuning § Data format](fine-tuning.md#3-data-format)).
+
+## 5. Sample: multi-turn with clarification and consecutive calls
 
 ```json
 {
-  "messages": [
-    {"role": "system", "content": "You are a travel assistant. Today is 2026-11-01. Default currency: EUR. Confirm before booking."},
-    {"role": "user", "content": "weather in tokyo & paris tmrw?"},
-    {"role": "assistant", "content": "I'll check both cities.", "tool_calls": [
-      {"id": "c1", "name": "get_weather", "arguments": {"city": "Tokyo", "date": "2026-11-02"}},
-      {"id": "c2", "name": "get_weather", "arguments": {"city": "Paris", "date": "2026-11-02"}}
-    ]},
-    {"role": "tool", "tool_call_id": "c1", "content": {"status": "OK", "temp_c": 14, "condition": "rain"}},
-    {"role": "tool", "tool_call_id": "c2", "content": {"status": "ERROR", "error": "date_out_of_range", "hint": "max 1 day ahead in local time"}},
-    {"role": "assistant", "content": "Tokyo tomorrow: 14°C with rain. I couldn't get Paris yet; its forecast isn't available for that date. Want me to try again later?"}
-  ],
   "tools": [
-    {"name": "get_weather", "description": "Daily forecast for a city.", "parameters": {
-      "type": "object",
-      "properties": {
-        "city": {"type": "string", "description": "City name, English."},
-        "date": {"type": "string", "format": "date", "description": "ISO date, local to the city."}
-      },
-      "required": ["city", "date"]
-    }}
+    {"name": "find_slots", "description": "Find free appointment slots for a doctor on a date.", "parameters": {"type": "object", "properties": {"doctor_id": {"type": "string"}, "date": {"type": "string", "format": "date"}}, "required": ["doctor_id", "date"]}},
+    {"name": "book_slot", "description": "Book a slot. Irreversible: confirm with the user first.", "parameters": {"type": "object", "properties": {"slot_id": {"type": "string"}}, "required": ["slot_id"]}},
+    {"name": "list_doctors", "description": "List doctors in a department.", "parameters": {"type": "object", "properties": {"department": {"type": "string", "enum": ["cardiology", "dermatology", "pediatrics"]}}, "required": ["department"]}}
+  ],
+  "messages": [
+    {"role": "system", "content": "You are a clinic booking assistant. Today is 2026-11-02 (Monday). Confirm before booking."},
+    {"role": "user", "content": "I need an appointment on Tuesday or Wednesday."},
+    {"role": "assistant", "content": "Sure. Which department is it for: cardiology, dermatology or pediatrics?"},
+    {"role": "user", "content": "dermatology"},
+    {"role": "assistant", "content": "Let me find the dermatologists first.", "tool_calls": [{"id": "c1", "name": "list_doctors", "arguments": {"department": "dermatology"}}]},
+    {"role": "tool", "tool_call_id": "c1", "content": {"doctors": [{"id": "d7", "name": "Dr. Lee"}]}},
+    {"role": "assistant", "content": "Dr. Lee is available in dermatology. Checking Tuesday and Wednesday.", "tool_calls": [
+      {"id": "c2", "name": "find_slots", "arguments": {"doctor_id": "d7", "date": "2026-11-03"}},
+      {"id": "c3", "name": "find_slots", "arguments": {"doctor_id": "d7", "date": "2026-11-04"}}
+    ]},
+    {"role": "tool", "tool_call_id": "c2", "content": {"slots": []}},
+    {"role": "tool", "tool_call_id": "c3", "content": {"slots": [{"slot_id": "s42", "time": "10:00"}, {"slot_id": "s43", "time": "15:30"}]}},
+    {"role": "assistant", "content": "Dr. Lee has no openings on Tuesday. On Wednesday, Nov 4, there are 10:00 and 15:30. Which one should I book?"},
+    {"role": "user", "content": "10 please"},
+    {"role": "assistant", "content": "Booking Wednesday 10:00 with Dr. Lee.", "tool_calls": [{"id": "c4", "name": "book_slot", "arguments": {"slot_id": "s42"}}]},
+    {"role": "tool", "tool_call_id": "c4", "content": {"status": "OK", "booking_id": "B-9013"}},
+    {"role": "assistant", "content": "Done. You're booked with Dr. Lee on Wednesday, Nov 4 at 10:00 (booking B-9013)."}
   ]
 }
 ```
 
-## 3. Dataset mix
+What this sample teaches:
 
-A starting point. Tune it on your [evaluation](evaluation.md) results.
+- Asking for a missing parameter, one value at a time.
+- A consecutive call: the doctor's id from `list_doctors` feeds `find_slots`.
+- Parallel calls for the two days.
+- Handling an empty result.
+- Taking the user's choice as the confirmation.
+- A grounded final answer.
 
-| Slice | Share |
-|---|---|
-| Single call | 20% |
-| Parallel | 15% |
-| Consecutive / mixed | 20% |
-| No call (chit-chat + no tool exists) | 15% |
-| Clarification (missing or ambiguous args) | 10% |
-| Tool error / empty result / recovery | 10% |
-| Adversarial (injection, out-of-role, toxic, noisy) | 10% |
-
-- About 50% multi-turn.
-- At least 30% of samples include distractor tools.
-- Balance domains and languages.
-- Deduplicate near-identical samples.
-- Hold out unseen tools and domains for evaluation.
-
-## 4. Quality gates
-
-Every sample must pass all of these:
-
-- Arguments validate against the JSON schema (types, `required`, `enum`, ranges).
-- Every `tool_call` has exactly one matching tool result (`id`), in order.
-- Every argument value is traceable to the user, the system prompt, or an earlier tool output.
-- No call to a tool that isn't in `tools`, and no call outside the user's role.
-- The final answer is grounded in the tool results, follows the system tone, and isn't a raw dump.
-- No PII leaks and no system-prompt leaks.
-
-## 5. Anti-patterns
-
-- Every sample is a happy path with a single call.
-- Tool outputs written as prose sentences.
-- Defaults the model guesses but no prompt or schema defines.
-- Asking for all params at once, like a form.
-- Same tool names in every sample, so the model overfits on names.
-- Errors with no hint for recovery.
+!!! note "Tool content format"
+    Tool results are shown as objects for readability. Most chat templates expect them as **strings**: serialize them with `json.dumps` when you build the dataset.

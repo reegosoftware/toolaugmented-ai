@@ -58,9 +58,9 @@ title: Function Calling / Tool Calling Reference
 
 </div>
 
-## Function/Tool Calling
+## What is function calling?
 
-Augmenting Large Language Models (LLMs) with Function Calls is a crucial technique that enables the integration of diverse data sources and enhances their performance. This process involves converting unstructured or noisy input data, such as natural language text, web pages, or even sensor readings, into structured formats like JSON. The model **never runs the function itself**: it proposes a call, your code runs it, and the model uses the result. See [What is Function Calling](concepts.md).
+Function calling connects a language model to the outside world: live data, APIs, databases, and actions. The model reads the user's message, chooses a function, and fills in its arguments as JSON. It can also turn unstructured or noisy input (natural language, web pages, documents) into structured data. The model **never runs the function itself**: it proposes a call, your code runs it, and the model uses the result. See [What is Function Calling](concepts.md).
 
 ## Recipe at a glance
 
@@ -73,21 +73,22 @@ Augmenting Large Language Models (LLMs) with Function Calls is a crucial techniq
 7. **Fine-tune and serve** ([Fine-Tuning Guide](fine-tuning.md)).
 8. **Evaluate** per slice, on held-out unseen tools ([Evaluation](evaluation.md)), and benchmark live at [toolcalling.ai](https://toolcalling.ai/).
 
-## Fine Tuning a Model for Function Calling
-To train a model to have Tool Calling capability, it's a best practice to cover the conversation examples with the taxonomies/domains below.
+## Dataset taxonomy
+
+To train a model for tool calling, cover every value of each taxonomy below in your conversation examples. [The Recipe](recipe.md) turns this into a coverage matrix.
 
 ### 1. Turn
-- `single turn`: The user asks only one question and leaves the conversation.
-- `multiple turns`: The user asks follow-up questions; there's back and forth between the user and the assistant.
+- `single turn`: one user message, one final answer.
+- `multiple turns`: follow-up questions and back-and-forth ([Turn](turn.md)).
 
 ### 2. Function Call
-- `single call`: The user asks a question that requires only one function call.
-- `multiple parallel calls`: The user asks a question that requires several independent function calls at once.
-- `multiple consecutive calls`: The user asks a question that requires function calls in sequence, where a later call depends on an earlier output.
-- `no call`: The user asks a question that doesn't require a function call, or that no available function supports.
+- `single call`: exactly one function call.
+- `multiple parallel calls`: several independent calls at once.
+- `multiple consecutive calls`: calls in sequence; a later one depends on an earlier result.
+- `no call`: nothing to call, or no tool supports the request.
 - Advanced: conditional calls, loops/pagination, retry, fallback, and cross-turn reuse ([Function Call](function-call.md)).
 
-### 3. Adversarial User Cases
+### 3. Adversarial User Cases ([details](adversarial-user-cases.md))
 - _Missing information_
 - _Happy path_ vs _Unhappy path_
 - _User cancels request_
@@ -105,13 +106,13 @@ To train a model to have Tool Calling capability, it's a best practice to cover 
 ### 4. Tool Results
 - _Success_, _Empty_, _Partial failure_, _Error with hint_, _Timeout / rate limit_, _Huge output_ ([Tool Output](best-practices-for-tool-output.md))
 
-### 5. Major Domains:
-- **Data Extraction**: Noisy natural language to JSON, where the data is hidden in a large amount of unstructured text.
+### 5. Major Domains
+- **Data Extraction**: noisy natural language to JSON, where the data is buried in unstructured text.
 - **Web Scraping**: HTML/XML to JSON
 - **Business and Sales**
 - **Finance**
 - **Education**
-- **Healthcare**: Diagnose diseases and generate treatment plans.
-- **Text Analysis**: Sentiment analysis, entity extraction, and text classification
+- **Healthcare**: scheduling, records lookup, triage support.
+- **Text Analysis**: sentiment analysis, entity extraction, text classification
 - **Developer tools**: code search, CI, ticketing, databases
 - **Personal assistant**: calendar, email, travel, smart home

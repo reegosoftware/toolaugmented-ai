@@ -1,7 +1,8 @@
 site_name: Tool Augmented AI
 site_url: https://toolaugmented.ai
 site_description: The function calling / tool calling reference. How it works, how to use it with every provider, how to build training data, fine-tune and evaluate models.
-site_author: Reego Software
+site_author: reego.ai
+copyright: Built by <a href="https://www.reego.ai">reego.ai</a> · Try function calling at <a href="https://toolcalling.ai/">toolcalling.ai</a>
 
 nav:
   - Home: index.md
@@ -112,6 +113,9 @@ markdown_extensions:
         - name: mermaid
           class: mermaid
           format: !!python/name:pymdownx.superfences.fence_code_format
+
+extra_javascript:
+  - javascripts/external-links.js
 
 plugins:
   - search

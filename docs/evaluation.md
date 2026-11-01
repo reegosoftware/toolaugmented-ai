@@ -22,7 +22,7 @@
 | Consistency (pass^k) | Succeeds on *all* k repeated runs, not just one |
 | Cost & latency | Tokens, number of calls, and wall time per completed task |
 
-- Report each metric per [dataset slice](best-practices-for-training-data.md#3-dataset-mix).
+- Report each metric per [dataset slice](recipe.md#7-dataset-mix).
 - Compare **seen vs unseen** tools and domains, and **single vs multi-turn** conversations.
 - Turn every failure into a new seed conversation and its variants.
 
@@ -35,7 +35,7 @@
 | **Execution match** | Calls with deterministic results | Needs real or mocked tools |
 | **State check** | Multi-step agents (did the booking exist at the end?) | Needs a simulated environment |
 | **LLM judge** | Final answer quality, clarification quality | Calibrate it against human labels; use a rubric |
-| **Human votes** | Real-world preference across models | Needs volume. The [toolcalling.ai Arena](https://app.toolcalling.ai/arena) collects blind pairwise votes for you |
+| **Human votes** | Real-world preference across models | Needs volume. The [toolcalling.ai Arena](https://app.toolcalling.ai/arena) collects blind pairwise votes on tool-calling tasks; [LMArena](https://arena.ai/leaderboard) does the same for general chat |
 
 ## Build your own eval set
 

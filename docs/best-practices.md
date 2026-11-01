@@ -1,32 +1,49 @@
-# Best Practices
+# General Best Practices
 
-## 1. Enums
+The rules that matter most, whether you call a hosted API or train your own model. The details are on [Schema](best-practices-for-schema.md), [System Instruction](best-practices-for-system-instruction.md), and [Tool Output](best-practices-for-tool-output.md).
 
-- Use either `enum`s or the options mentioned in descriptions as much as possible.
+## 1. Start from a clear scenario and role
 
-## 2. Function descriptions
+Decide **who** the user is: a guest, a staff member, a manager, an admin. Expose only the tools that role may use. A hotel guest's assistant must not have `cancel_any_booking`, even if the backend would block it. A tool the model can see is a tool it can be talked into calling.
 
-- Always include the function description within the function definition, for consistency.
+## 2. Design tools around tasks
 
-## 3. Parameters
-- **Clear parameter definitions**:
-    - Specify whether parameters like `max_length` refer to the number of characters, words, or sentences. This prevents ambiguity and makes clear how to use the function.
+- **One clear responsibility per tool.** Not so granular that every task needs five calls, not so broad that one tool takes a `mode` switch with ten behaviors.
+- **Inputs and outputs must not duplicate each other.** Every tool should add information or perform an action.
+- **Keep the set small.** Around 20-30 tools in context at most; beyond that, use [tool search](function-pivoting-aka-tool-search.md).
+- **Group similar operations** (`search_orders` with filters) instead of many near-copies (`search_orders_by_date`, `search_orders_by_status`, ...).
 
-- **Consistent default parameters**:
-    - Ensure default parameter values are consistent across the system. For example, if the default limit for retrieving news is 5, this should be reflected in all system prompts and documentation.
-    - In short, do not assume any default parameter. If something should have a default value, include it in the system prompt, in the field description, or as a `default` field in the parameter.
+## 3. Write descriptions for the model
 
-## 4. Pick a clear scenario
+The model chooses tools by reading their descriptions, so each one should state:
 
-- The role of the user talking with the AI assistant must be clear. They could be an end-user (such as a guest renting a hotel room through the system), a manager, a staff member, etc. The functions included must take the user's role into account: if the user is an end-user in a booking system, you MUST NOT include functions for operations the user couldn't reasonably perform, like cancelling another user's booking.
+- **What** the tool does and **what it returns**.
+- **When to use it**, and **when not to** (especially next to a similar tool).
+- **Constraints**: limits, units, formats, side effects (_"Charges the card. Ask for confirmation first."_).
 
-## 5. Consistent naming standards
+## 4. Make parameters unambiguous
 
-- Functions are commonly named with a verb and a noun, such as `get_reservations`, `createUser`, `get_compliance`, `add_task`, etc. This standard isn't mandatory, but follow it unless you have a good reason not to.
-- Pick one case (PascalCase, camelCase, snake_case, etc.) and stick with it, so the whole system is consistent.
+- Use **`enum`s** wherever the values are a fixed set.
+- **State units and formats**: does `max_length` mean characters, words, or sentences? Is `date` ISO 8601? Which timezone?
+- **Never leave defaults implicit.** If something has a default, put it in the schema (`default`), the description, or the system prompt, and keep it **identical** everywhere. If the news tool returns 5 items by default, every prompt and doc must say 5.
+- Mark only the truly required fields as **`required`**.
 
-## 6. Safety
+## 5. Name consistently
 
-- Confirm before destructive or irreversible actions (delete, pay, send).
-- Make write tools idempotent, e.g. with a `request_id`, so a repeated message can't run an action twice.
-- Least privilege: don't call more tools than the task needs.
+- Use a **verb + noun** (`get_reservations`, `create_user`, `cancel_order`) unless you have a reason not to.
+- Pick **one case** (snake_case, camelCase, ...) and use it for every tool and parameter.
+- No whitespace or special characters in names: `build_strength`, not `build strength`. Check your provider's name limits ([Providers](providers.md#key-differences-that-bite)).
+
+## 6. Return structured results and helpful errors
+
+Results are for the model, not the user: concise key-value data, enums, numbers. Errors say **what** went wrong and **how to fix it**. See [Tool Output](best-practices-for-tool-output.md).
+
+## 7. Build in safety
+
+- **Confirm** before destructive or irreversible actions (delete, pay, send).
+- Make write tools **idempotent** (e.g. a `request_id`), so a repeated message can't run an action twice.
+- **Least privilege**: tools run with the user's permissions and the model calls only what the task needs. See [Security](security.md).
+
+## 8. Test with real conversations
+
+Run the [adversarial cases](adversarial-user-cases.md) against your tools before users do. The [toolcalling.ai workspace](https://app.toolcalling.ai/) makes this quick. Then measure it with an [evaluation](evaluation.md).

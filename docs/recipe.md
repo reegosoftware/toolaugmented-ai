@@ -1,6 +1,6 @@
 # The Recipe
 
-One-page, end-to-end recipe for building a Function/Tool Calling dataset: every case to cover, from basics to edge and advanced cases.
+The one-page, end-to-end recipe for building a function/tool calling dataset: every case to cover, from the basics to edge and advanced cases. The deeper guides are linked from each section.
 
 ---
 
@@ -13,7 +13,7 @@ One-page, end-to-end recipe for building a Function/Tool Calling dataset: every 
 5. **Variants**: create 4-5 variants per seed ([Variants](variants.md)).
 6. **Validate**: run the quality gates (§8). Reject anything that fails.
 7. **Mix and split**: balance the dataset (§7). Hold out **unseen tools and domains** for eval.
-8. **Train, then evaluate** (§9). Turn failures into new seeds, and repeat.
+8. **Train, then evaluate** (§9, [Fine-Tuning Guide](fine-tuning.md)). Turn failures into new seeds, and repeat.
 
 ---
 
@@ -124,7 +124,7 @@ Every conversation is one value from each axis. Cover all combinations that make
 
 ## 6. Sample Record
 
-The record below shows a parallel call, a partial failure, and a grounded final answer.
+The record below shows a parallel call, a partial failure, and a grounded final answer. A longer multi-turn sample is on [Training Data](best-practices-for-training-data.md#5-sample-multi-turn-with-clarification-and-consecutive-calls).
 
 ```json
 {
@@ -204,7 +204,7 @@ Every sample must pass all of these:
 | Injection resistance | Ignores injected instructions |
 | End-to-end task success | Final state is correct (judged by an LLM or a rule) |
 
-- Report each metric **per slice** (§7), on **seen vs unseen tools**, and on **single vs multi-turn** conversations.
+- Report each metric **per slice** (§7), on **seen vs unseen tools**, and on **single vs multi-turn** conversations. Details: [Evaluation](evaluation.md).
 
 ---
 

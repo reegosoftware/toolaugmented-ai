@@ -4,8 +4,6 @@
 
 Its companion, **[toolcalling.ai](https://toolcalling.ai/)**, is a workspace for building and debugging function calls, with a model **Arena** and a community **leaderboard** ranked by blind votes on real tool-calling tasks.
 
-## Built by Reego Software
+## Built by reego.ai
 
-Reego is an Information Technology individual entrepreneurship company founded in 2021, mainly operating on B2B contracts.
-
-[Reego Software](https://reego.software)
+Tool Augmented AI and toolcalling.ai are built by **[reego.ai](https://www.reego.ai)**.

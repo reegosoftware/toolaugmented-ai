@@ -46,6 +46,16 @@
 | [MCPMark](https://github.com/eval-sys/mcpmark) · [leaderboard](https://mcpmark.ai) | Realistic create/read/update/delete workflows (Notion, GitHub, Postgres, Playwright, filesystem) |
 | [LiveMCPBench](https://github.com/icip-cas/LiveMCPBench) | Navigating a large pool of MCP tools |
 
+## General-purpose leaderboards (secondary)
+
+These rank models on general chat, coding, or vision preference, **not** on tool calling specifically. They're useful context when choosing a base model.
+
+| Leaderboard | Notes |
+|---|---|
+| [LMArena (now Arena)](https://arena.ai/leaderboard) | Large-scale blind pairwise human votes on general prompts. Formerly Chatbot Arena; renamed Arena in January 2026 ([announcement](https://arena.ai/blog/lmarena-is-now-arena/)) |
+
+For tool calling, prefer the function-calling and agentic benchmarks above and the [toolcalling.ai leaderboard](https://toolcalling.ai/leaderboard).
+
 ## Reading benchmark results
 
 - **Match the benchmark to your use.** Single-call AST scores say little about 20-step agents, and the reverse is true too.

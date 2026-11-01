@@ -9,7 +9,6 @@
 ## 2. Clarity and logical flow
 
 - Make sure the inputs and outputs of tools are not redundant or identical. Each tool should add value or perform a transformation.
-- Ensure prompts and instructions are clear, include realistic scenarios, and are easy to follow or implement.
 
 ## 3. Naming and structural conventions
 
@@ -20,13 +19,13 @@ For example, use `build_strength` instead of `build strength`.
 
 ## 4. Enhanced definitions and details
 
-- Provide detailed, actionable definitions for properties and system instructions.
-- A detailed description helps the model choose the correct function at the correct turn.
+- Give every property a detailed, actionable description: purpose, format, unit, example.
+- A detailed function description helps the model choose the correct function at the correct turn. Say when to use it and when **not** to.
 
 ## 5. Function output
 
-- Describing a function's output helps the model plan its chain of thought, e.g. with `returns`, `output`, or `yields`.
-- The output doesn't need its own field, because not all compilers allow it. It's also acceptable to describe it in natural language in the description instead of JSON.
+- Describe what the function **returns** (`returns`, `output`, `yields`). Knowing the output helps the model plan the next step.
+- Not every API has an output-schema field (MCP has `outputSchema`, most chat APIs don't). Describing the return value in plain language inside the description works everywhere.
 
 ## 6. Argument edge cases
 
