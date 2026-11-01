@@ -1,6 +1,7 @@
 site_name: Tool Augmented AI
 nav:
   - Home: index.md
+  - Super Recipe: super-recipe.md
   - Turn: turn.md
   - Function Call: function-call.md
   - Function Pivoting aka Tool Search: function-pivoting-aka-tool-search.md

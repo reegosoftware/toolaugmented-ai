@@ -42,3 +42,6 @@ To train a model to have Tool Calling capability, it's a best practice to cover 
 - **Education**
 - **Healthcare**: Diagnose diseases, and generate treatment plans.
 - **Text Analysis**: Sentiment analysis, Entity extraction, and text classification
+
+## Super Recipe
+For the full end-to-end recipe, including the coverage matrix, edge and advanced cases, dataset mix, quality gates and evaluation, see [Super Recipe](super-recipe.md).
