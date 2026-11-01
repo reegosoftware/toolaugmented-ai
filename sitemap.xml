@@ -2,54 +2,58 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://toolaugmented.ai/</loc>
-         <lastmod>2026-04-26</lastmod>
+         <lastmod>2026-11-01</lastmod>
     </url>
     <url>
          <loc>https://toolaugmented.ai/about/</loc>
-         <lastmod>2026-04-26</lastmod>
+         <lastmod>2026-11-01</lastmod>
     </url>
     <url>
          <loc>https://toolaugmented.ai/adversarial-user-cases/</loc>
-         <lastmod>2026-04-26</lastmod>
+         <lastmod>2026-11-01</lastmod>
     </url>
     <url>
          <loc>https://toolaugmented.ai/best-practices-for-schema/</loc>
-         <lastmod>2026-04-26</lastmod>
+         <lastmod>2026-11-01</lastmod>
     </url>
     <url>
          <loc>https://toolaugmented.ai/best-practices-for-system-instruction/</loc>
-         <lastmod>2026-04-26</lastmod>
+         <lastmod>2026-11-01</lastmod>
     </url>
     <url>
          <loc>https://toolaugmented.ai/best-practices-for-tool-output/</loc>
-         <lastmod>2026-04-26</lastmod>
+         <lastmod>2026-11-01</lastmod>
     </url>
     <url>
          <loc>https://toolaugmented.ai/best-practices-for-training-data/</loc>
-         <lastmod>2026-04-26</lastmod>
+         <lastmod>2026-11-01</lastmod>
     </url>
     <url>
          <loc>https://toolaugmented.ai/best-practices/</loc>
-         <lastmod>2026-04-26</lastmod>
+         <lastmod>2026-11-01</lastmod>
     </url>
     <url>
          <loc>https://toolaugmented.ai/function-call/</loc>
-         <lastmod>2026-04-26</lastmod>
+         <lastmod>2026-11-01</lastmod>
     </url>
     <url>
          <loc>https://toolaugmented.ai/function-pivoting-aka-tool-search/</loc>
-         <lastmod>2026-04-26</lastmod>
+         <lastmod>2026-11-01</lastmod>
     </url>
     <url>
          <loc>https://toolaugmented.ai/recommendations-for-improvement/</loc>
-         <lastmod>2026-04-26</lastmod>
+         <lastmod>2026-11-01</lastmod>
+    </url>
+    <url>
+         <loc>https://toolaugmented.ai/super-recipe/</loc>
+         <lastmod>2026-11-01</lastmod>
     </url>
     <url>
          <loc>https://toolaugmented.ai/turn/</loc>
-         <lastmod>2026-04-26</lastmod>
+         <lastmod>2026-11-01</lastmod>
     </url>
     <url>
          <loc>https://toolaugmented.ai/variants/</loc>
-         <lastmod>2026-04-26</lastmod>
+         <lastmod>2026-11-01</lastmod>
     </url>
 </urlset>
