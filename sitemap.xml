@@ -13,6 +13,10 @@
          <lastmod>2026-11-01</lastmod>
     </url>
     <url>
+         <loc>https://toolaugmented.ai/benchmarks/</loc>
+         <lastmod>2026-11-01</lastmod>
+    </url>
+    <url>
          <loc>https://toolaugmented.ai/best-practices-for-schema/</loc>
          <lastmod>2026-11-01</lastmod>
     </url>
@@ -33,7 +37,19 @@
          <lastmod>2026-11-01</lastmod>
     </url>
     <url>
+         <loc>https://toolaugmented.ai/concepts/</loc>
+         <lastmod>2026-11-01</lastmod>
+    </url>
+    <url>
          <loc>https://toolaugmented.ai/evaluation/</loc>
+         <lastmod>2026-11-01</lastmod>
+    </url>
+    <url>
+         <loc>https://toolaugmented.ai/faq/</loc>
+         <lastmod>2026-11-01</lastmod>
+    </url>
+    <url>
+         <loc>https://toolaugmented.ai/fine-tuning/</loc>
          <lastmod>2026-11-01</lastmod>
     </url>
     <url>
@@ -45,11 +61,43 @@
          <lastmod>2026-11-01</lastmod>
     </url>
     <url>
+         <loc>https://toolaugmented.ai/glossary/</loc>
+         <lastmod>2026-11-01</lastmod>
+    </url>
+    <url>
+         <loc>https://toolaugmented.ai/mcp/</loc>
+         <lastmod>2026-11-01</lastmod>
+    </url>
+    <url>
+         <loc>https://toolaugmented.ai/providers/</loc>
+         <lastmod>2026-11-01</lastmod>
+    </url>
+    <url>
+         <loc>https://toolaugmented.ai/recipe/</loc>
+         <lastmod>2026-11-01</lastmod>
+    </url>
+    <url>
          <loc>https://toolaugmented.ai/recommendations-for-improvement/</loc>
          <lastmod>2026-11-01</lastmod>
     </url>
     <url>
+         <loc>https://toolaugmented.ai/resources/</loc>
+         <lastmod>2026-11-01</lastmod>
+    </url>
+    <url>
+         <loc>https://toolaugmented.ai/security/</loc>
+         <lastmod>2026-11-01</lastmod>
+    </url>
+    <url>
+         <loc>https://toolaugmented.ai/structured-outputs/</loc>
+         <lastmod>2026-11-01</lastmod>
+    </url>
+    <url>
          <loc>https://toolaugmented.ai/turn/</loc>
+         <lastmod>2026-11-01</lastmod>
+    </url>
+    <url>
+         <loc>https://toolaugmented.ai/usage/</loc>
          <lastmod>2026-11-01</lastmod>
     </url>
     <url>
