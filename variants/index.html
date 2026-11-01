@@ -54,10 +54,6 @@
                 </li>
               </ul>
               <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../super-recipe/">Super Recipe</a>
-                </li>
-              </ul>
-              <ul>
                 <li class="toctree-l1"><a class="reference internal" href="../turn/">Turn</a>
                 </li>
               </ul>
@@ -102,9 +98,11 @@
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#variant-with-user-persona">Variant with user persona:</a>
     </li>
-    <li class="toctree-l3"><a class="reference internal" href="#variant-with-json-schema">Variant with json schema:</a>
+    <li class="toctree-l3"><a class="reference internal" href="#variant-with-json-schema">Variant with JSON schema:</a>
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#variant-with-adversarial-cases">Variant with adversarial cases:</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#variant-with-tool-results">Variant with tool results:</a>
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#variant-with-noisy-user-prompt">Variant with noisy user prompt:</a>
     </li>
@@ -115,6 +113,10 @@
               </ul>
               <ul>
                 <li class="toctree-l1"><a class="reference internal" href="../best-practices/">Best Practices</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../evaluation/">Evaluation</a>
                 </li>
               </ul>
               <ul>
@@ -145,34 +147,39 @@
             <div class="section" itemprop="articleBody">
               
                 <h1 id="variants">Variants</h1>
-<p>From an original task, 4-5 variants might be created.</p>
+<p>Create 4-5 variants from each original task.</p>
 <h2 id="to-create-variants">To create variants:</h2>
 <h3 id="variant-with-system-instructions">Variant with system instructions:</h3>
-<p>Slightly change the system prompt with a variant scenario.</p>
+<p>Slightly change the system prompt to a variant scenario.</p>
 <ul>
-<li>Behavioral: Include different kind of behavior e.g. assistant should be concise, assistant should be kind etc</li>
-<li>Data related: Change a data value such as date, name, email, phone etc.</li>
+<li>Behavioral: include a different kind of behavior, e.g. the assistant should be concise, the assistant should be kind, etc.</li>
+<li>Data related: change a data value such as a date, name, email, or phone number.</li>
+<li>Policy related: change a default, a confirmation rule, or the user's role.</li>
 </ul>
 <h3 id="variant-with-user-persona">Variant with user persona:</h3>
-<p>Use exactly same schema and system prompt but change the user behavior.</p>
+<p>Use exactly the same schema and system prompt, but change the user's behavior.</p>
 <ul>
-<li>Users might have different personas e.g. user might not provide all the informations or they might provide all at once</li>
+<li>Users may have different personas, e.g. a user may hold back some information, or provide it all at once.</li>
 </ul>
-<h3 id="variant-with-json-schema">Variant with json schema:</h3>
-<p>Slightly change the JSON schema while keepin the res as same.</p>
+<h3 id="variant-with-json-schema">Variant with JSON schema:</h3>
+<p>Slightly change the JSON schema while keeping the rest the same.</p>
 <ul>
-<li>Update json schema with competing or mixed functions (Say if original includes 3 functions, this might include 5-6 functions)</li>
+<li>Update the JSON schema with competing or mixed functions (if the original includes 3 functions, the variant might include 5-6).</li>
+<li>Rename tools, reorder params, or change the param style, keeping the same intent, so the model doesn't overfit on names.</li>
 </ul>
 <h3 id="variant-with-adversarial-cases">Variant with adversarial cases:</h3>
-<p>Unhappy cases, where the assistant might not able to fulfill the request at once, or might give up or might fail nicely, recover from failure etc.</p>
+<p>Unhappy cases, where the assistant can't fulfill the request at once, gives up, fails gracefully, or recovers from failure.</p>
+<h3 id="variant-with-tool-results">Variant with tool results:</h3>
+<p>Keep the conversation the same, but change the tool result: empty, partial failure, error with hint, timeout, or huge output.</p>
 <h3 id="variant-with-noisy-user-prompt">Variant with noisy user prompt:</h3>
-<p>Users sometimes might ask same thing but with different wording and/or with a noisy data</p>
+<p>Users may ask for the same thing with different wording and/or noisy data.</p>
 <ul>
 <li>Some users might be toxic</li>
 <li>Some users might use slang</li>
-<li>Some developers might include user prompt in JSON/HTML format</li>
+<li>Some developers might include the user prompt in JSON/HTML format</li>
 <li>Some users might be verbose</li>
-<li>Some users might use some shortcuts e.g. <em>"properties.color = red"</em>, instead of saying <em>"give me red products"</em></li>
+<li>Some users might use shortcuts, e.g. <em>"properties.color = red"</em> instead of <em>"give me red products"</em></li>
+<li>Some users might write in another language, or mix languages</li>
 </ul>
               
             </div>

@@ -52,9 +52,11 @@
               <ul class="current">
                 <li class="toctree-l1 current"><a class="reference internal current" href="#">Home</a>
     <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#try-it-live-toolcallingai">Try it live: toolcalling.ai</a>
+    </li>
     <li class="toctree-l2"><a class="reference internal" href="#functiontool-calling">Function/Tool Calling</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#how-to-test-functiontool-calling">How to test Function/Tool Calling?</a>
+    <li class="toctree-l2"><a class="reference internal" href="#recipe-at-a-glance">Recipe at a glance</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#fine-tuning-a-model-for-function-calling">Fine Tuning a Model for Function Calling</a>
         <ul>
@@ -64,17 +66,13 @@
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#3-adversarial-user-cases">3. Adversarial User Cases</a>
     </li>
-    <li class="toctree-l3"><a class="reference internal" href="#4-major-domains">4. Major Domains:</a>
+    <li class="toctree-l3"><a class="reference internal" href="#4-tool-results">4. Tool Results</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#5-major-domains">5. Major Domains:</a>
     </li>
         </ul>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#super-recipe">Super Recipe</a>
-    </li>
     </ul>
-                </li>
-              </ul>
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="super-recipe/">Super Recipe</a>
                 </li>
               </ul>
               <ul>
@@ -122,6 +120,10 @@
                 </li>
               </ul>
               <ul>
+                <li class="toctree-l1"><a class="reference internal" href="evaluation/">Evaluation</a>
+                </li>
+              </ul>
+              <ul>
                 <li class="toctree-l1"><a class="reference internal" href="about/">About</a>
                 </li>
               </ul>
@@ -149,23 +151,45 @@
             <div class="section" itemprop="articleBody">
               
                 <h1 id="tool-augmented-ai">Tool Augmented AI</h1>
+<h2 id="try-it-live-toolcallingai">Try it live: <a href="https://toolcalling.ai/">toolcalling.ai</a></h2>
+<blockquote>
+<p><strong>Don't just read about function calling. Run it.</strong></p>
+<p>Bring your JSON schema and a prompt, run a real function call, and see which tools the model picks and with which arguments. Then <strong>vote</strong> on the best response, and help everyone see which models really get tool calling right.</p>
+<p><strong><a href="https://toolcalling.ai/">Run a function call and vote at toolcalling.ai →</a></strong></p>
+</blockquote>
+<ul>
+<li><strong>Test your schema</strong>: catch vague descriptions, missing enums, and guessed defaults before your users do.</li>
+<li><strong>Compare models</strong>: single, parallel, consecutive, and no-call cases, side by side.</li>
+<li><strong>Vote</strong>: your votes shape a community view of which models handle tool calling best.</li>
+</ul>
+<hr />
 <h2 id="functiontool-calling">Function/Tool Calling</h2>
-<p>Augmenting Large Language Models (LLMs) with Function Calls is a crucial technique that enables the integration of diverse data sources and enhances their performance. This process involves converting unstructured or noisy input data, such as natural language text, web pages, or even sensor readings into structured formats like JSON.</p>
-<h2 id="how-to-test-functiontool-calling">How to test Function/Tool Calling?</h2>
-<p>To test your JSON schema and conversations, please visit the webpage <a href="https://toolcalling.ai/">Function Calling Tool</a></p>
+<p>Augmenting Large Language Models (LLMs) with Function Calls is a crucial technique that enables the integration of diverse data sources and enhances their performance. This process involves converting unstructured or noisy input data, such as natural language text, web pages, or even sensor readings, into structured formats like JSON.</p>
+<h2 id="recipe-at-a-glance">Recipe at a glance</h2>
+<ol>
+<li><strong>Scenario</strong>: pick a domain and the user's role. Expose only the tools that role may use (<a href="best-practices/">Best Practices</a>).</li>
+<li><strong>Schema</strong>: write 3-8 tools, plus 2-5 similar <strong>distractor</strong> tools (<a href="best-practices-for-schema/">Schema</a>).</li>
+<li><strong>System prompt</strong>: tone, policies, defaults, confirmation rules, and out-of-scope behavior (<a href="best-practices-for-system-instruction/">System Instruction</a>).</li>
+<li><strong>Seed conversations</strong>: one per combination of the taxonomies below.</li>
+<li><strong>Variants</strong>: 4-5 per seed (<a href="variants/">Variants</a>).</li>
+<li><strong>Validate</strong>: run the quality gates, balance the mix, and deduplicate (<a href="best-practices-for-training-data/">Training Data</a>).</li>
+<li><strong>Evaluate</strong> per slice, on held-out unseen tools. Turn the failures into new seeds (<a href="evaluation/">Evaluation</a>).</li>
+<li><strong>Try it live</strong>: run your schema at <a href="https://toolcalling.ai/">toolcalling.ai</a> and vote for the best responses.</li>
+</ol>
 <h2 id="fine-tuning-a-model-for-function-calling">Fine Tuning a Model for Function Calling</h2>
-<p>To train a model to have Tool Calling capability, it's a best practice to cover the conversation examples with below taxonomies/domains.</p>
+<p>To train a model to have Tool Calling capability, it's a best practice to cover the conversation examples with the taxonomies/domains below.</p>
 <h3 id="1-turn">1. Turn</h3>
 <ul>
-<li><code>single turn</code>: The user asks only one question and leave the conversation.</li>
-<li><code>multiple turns</code>: The user asks follow-up questions, there's back and forth between the user and the assistant.</li>
+<li><code>single turn</code>: The user asks only one question and leaves the conversation.</li>
+<li><code>multiple turns</code>: The user asks follow-up questions; there's back and forth between the user and the assistant.</li>
 </ul>
 <h3 id="2-function-call">2. Function Call</h3>
 <ul>
-<li><code>single call</code>: The user asks a question which requires only one function call in a row.</li>
-<li><code>multiple parallel calls</code>: The user asks a question which requires multiple function calls in a row.</li>
-<li><code>multiple consecutive calls</code>: The user asks a question which requires one/multiple function calls consecutively in a row.</li>
-<li><code>no call</code>: The user asks a question which does not require a function call at all.</li>
+<li><code>single call</code>: The user asks a question that requires only one function call.</li>
+<li><code>multiple parallel calls</code>: The user asks a question that requires several independent function calls at once.</li>
+<li><code>multiple consecutive calls</code>: The user asks a question that requires function calls in sequence, where a later call depends on an earlier output.</li>
+<li><code>no call</code>: The user asks a question that doesn't require a function call, or that no available function supports.</li>
+<li>Advanced: conditional calls, loops/pagination, retry, fallback, and cross-turn reuse (<a href="function-call/">Function Call</a>).</li>
 </ul>
 <h3 id="3-adversarial-user-cases">3. Adversarial User Cases</h3>
 <ul>
@@ -179,25 +203,29 @@
 <li><em>System pivoting</em></li>
 <li><em>Toxic user</em></li>
 <li><em>Noisy input</em></li>
-<li>etc</li>
+<li><em>Conflicting info</em>, <em>Multi-intent</em>, <em>Out-of-role request</em></li>
+<li><em>Prompt injection</em> from the user or from a tool output</li>
+<li><em>Destructive actions</em> and <em>duplicate requests</em></li>
 </ul>
-<h3 id="4-major-domains">4. Major Domains:</h3>
+<h3 id="4-tool-results">4. Tool Results</h3>
 <ul>
-<li><strong>Data Extraction</strong>: Noisy, Natural Language to JSON. Where the data is hidden in a huge unstructured data.</li>
+<li><em>Success</em>, <em>Empty</em>, <em>Partial failure</em>, <em>Error with hint</em>, <em>Timeout / rate limit</em>, <em>Huge output</em> (<a href="best-practices-for-tool-output/">Tool Output</a>)</li>
+</ul>
+<h3 id="5-major-domains">5. Major Domains:</h3>
+<ul>
+<li><strong>Data Extraction</strong>: Noisy natural language to JSON, where the data is hidden in a large amount of unstructured text.</li>
 <li><strong>Web Scraping</strong>: HTML/XML to JSON</li>
 <li><strong>Business and Sales</strong></li>
 <li><strong>Finance</strong></li>
 <li><strong>Education</strong></li>
-<li><strong>Healthcare</strong>: Diagnose diseases, and generate treatment plans.</li>
-<li><strong>Text Analysis</strong>: Sentiment analysis, Entity extraction, and text classification</li>
+<li><strong>Healthcare</strong>: Diagnose diseases and generate treatment plans.</li>
+<li><strong>Text Analysis</strong>: Sentiment analysis, entity extraction, and text classification</li>
 </ul>
-<h2 id="super-recipe">Super Recipe</h2>
-<p>For the full end-to-end recipe, including the coverage matrix, edge and advanced cases, dataset mix, quality gates and evaluation, see <a href="super-recipe/">Super Recipe</a>.</p>
               
             </div>
           </div><footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
-        <a href="super-recipe/" class="btn btn-neutral float-right" title="Super Recipe">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="turn/" class="btn btn-neutral float-right" title="Turn">Next <span class="icon icon-circle-arrow-right"></span></a>
     </div>
 
   <hr/>
@@ -221,7 +249,7 @@
     
     
     
-      <span><a href="super-recipe/" style="color: #fcfcfc">Next &raquo;</a></span>
+      <span><a href="turn/" style="color: #fcfcfc">Next &raquo;</a></span>
     
   </span>
 </div>
@@ -241,5 +269,5 @@
 
 <!--
 MkDocs version : 1.6.1
-Build Date UTC : 2026-11-01 20:02:50.543038+00:00
+Build Date UTC : 2026-11-01 20:04:59.575227+00:00
 -->

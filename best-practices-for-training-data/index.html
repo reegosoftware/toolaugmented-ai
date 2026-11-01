@@ -54,10 +54,6 @@
                 </li>
               </ul>
               <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../super-recipe/">Super Recipe</a>
-                </li>
-              </ul>
-              <ul>
                 <li class="toctree-l1"><a class="reference internal" href="../turn/">Turn</a>
                 </li>
               </ul>
@@ -84,7 +80,15 @@
               <ul class="current">
                 <li class="toctree-l1 current"><a class="reference internal current" href="#">Best Practices for Training Data</a>
     <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#planning">Planning</a>
+    <li class="toctree-l2"><a class="reference internal" href="#1-planning">1. Planning</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#2-sample-record">2. Sample record</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#3-dataset-mix">3. Dataset mix</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#4-quality-gates">4. Quality gates</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#5-anti-patterns">5. Anti-patterns</a>
     </li>
     </ul>
                 </li>
@@ -103,6 +107,10 @@
               </ul>
               <ul>
                 <li class="toctree-l1"><a class="reference internal" href="../best-practices/">Best Practices</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../evaluation/">Evaluation</a>
                 </li>
               </ul>
               <ul>
@@ -132,15 +140,103 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
             <div class="section" itemprop="articleBody">
               
-                <h1 id="best-practices-for-training-data">Best practices for training data</h1>
-<h2 id="planning">Planning</h2>
+                <h1 id="best-practices-for-training-data">Best Practices for Training Data</h1>
+<h2 id="1-planning">1. Planning</h2>
 <ul>
-<li>
-<p>Planning, aka preceding text, is crucial for the model to follow and not to lose next action.</p>
-</li>
-<li>
-<p>Provide clear intermediary explanations or logical connections between sequential tool uses to avoid confusion about the process flow.</p>
-</li>
+<li>Planning, aka the preceding text, is crucial for the model to keep track of its next action.</li>
+<li>Provide clear intermediate explanations or logical connections between sequential tool uses, so the process flow is never confusing.</li>
+</ul>
+<h2 id="2-sample-record">2. Sample record</h2>
+<p>The record below shows a parallel call, a partial failure, and a grounded final answer.</p>
+<pre><code class="language-json">{
+  &quot;messages&quot;: [
+    {&quot;role&quot;: &quot;system&quot;, &quot;content&quot;: &quot;You are a travel assistant. Today is 2026-11-01. Default currency: EUR. Confirm before booking.&quot;},
+    {&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;weather in tokyo &amp; paris tmrw?&quot;},
+    {&quot;role&quot;: &quot;assistant&quot;, &quot;content&quot;: &quot;I'll check both cities.&quot;, &quot;tool_calls&quot;: [
+      {&quot;id&quot;: &quot;c1&quot;, &quot;name&quot;: &quot;get_weather&quot;, &quot;arguments&quot;: {&quot;city&quot;: &quot;Tokyo&quot;, &quot;date&quot;: &quot;2026-11-02&quot;}},
+      {&quot;id&quot;: &quot;c2&quot;, &quot;name&quot;: &quot;get_weather&quot;, &quot;arguments&quot;: {&quot;city&quot;: &quot;Paris&quot;, &quot;date&quot;: &quot;2026-11-02&quot;}}
+    ]},
+    {&quot;role&quot;: &quot;tool&quot;, &quot;tool_call_id&quot;: &quot;c1&quot;, &quot;content&quot;: {&quot;status&quot;: &quot;OK&quot;, &quot;temp_c&quot;: 14, &quot;condition&quot;: &quot;rain&quot;}},
+    {&quot;role&quot;: &quot;tool&quot;, &quot;tool_call_id&quot;: &quot;c2&quot;, &quot;content&quot;: {&quot;status&quot;: &quot;ERROR&quot;, &quot;error&quot;: &quot;date_out_of_range&quot;, &quot;hint&quot;: &quot;max 1 day ahead in local time&quot;}},
+    {&quot;role&quot;: &quot;assistant&quot;, &quot;content&quot;: &quot;Tokyo tomorrow: 14°C with rain. I couldn't get Paris yet; its forecast isn't available for that date. Want me to try again later?&quot;}
+  ],
+  &quot;tools&quot;: [
+    {&quot;name&quot;: &quot;get_weather&quot;, &quot;description&quot;: &quot;Daily forecast for a city.&quot;, &quot;parameters&quot;: {
+      &quot;type&quot;: &quot;object&quot;,
+      &quot;properties&quot;: {
+        &quot;city&quot;: {&quot;type&quot;: &quot;string&quot;, &quot;description&quot;: &quot;City name, English.&quot;},
+        &quot;date&quot;: {&quot;type&quot;: &quot;string&quot;, &quot;format&quot;: &quot;date&quot;, &quot;description&quot;: &quot;ISO date, local to the city.&quot;}
+      },
+      &quot;required&quot;: [&quot;city&quot;, &quot;date&quot;]
+    }}
+  ]
+}
+</code></pre>
+<h2 id="3-dataset-mix">3. Dataset mix</h2>
+<p>A starting point. Tune it on your <a href="../evaluation/">evaluation</a> results.</p>
+<table>
+<thead>
+<tr>
+<th>Slice</th>
+<th>Share</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Single call</td>
+<td>20%</td>
+</tr>
+<tr>
+<td>Parallel</td>
+<td>15%</td>
+</tr>
+<tr>
+<td>Consecutive / mixed</td>
+<td>20%</td>
+</tr>
+<tr>
+<td>No call (chit-chat + no tool exists)</td>
+<td>15%</td>
+</tr>
+<tr>
+<td>Clarification (missing or ambiguous args)</td>
+<td>10%</td>
+</tr>
+<tr>
+<td>Tool error / empty result / recovery</td>
+<td>10%</td>
+</tr>
+<tr>
+<td>Adversarial (injection, out-of-role, toxic, noisy)</td>
+<td>10%</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>About 50% multi-turn.</li>
+<li>At least 30% of samples include distractor tools.</li>
+<li>Balance domains and languages.</li>
+<li>Deduplicate near-identical samples.</li>
+<li>Hold out unseen tools and domains for evaluation.</li>
+</ul>
+<h2 id="4-quality-gates">4. Quality gates</h2>
+<p>Every sample must pass all of these:</p>
+<ul>
+<li>Arguments validate against the JSON schema (types, <code>required</code>, <code>enum</code>, ranges).</li>
+<li>Every <code>tool_call</code> has exactly one matching tool result (<code>id</code>), in order.</li>
+<li>Every argument value is traceable to the user, the system prompt, or an earlier tool output.</li>
+<li>No call to a tool that isn't in <code>tools</code>, and no call outside the user's role.</li>
+<li>The final answer is grounded in the tool results, follows the system tone, and isn't a raw dump.</li>
+<li>No PII leaks and no system-prompt leaks.</li>
+</ul>
+<h2 id="5-anti-patterns">5. Anti-patterns</h2>
+<ul>
+<li>Every sample is a happy path with a single call.</li>
+<li>Tool outputs written as prose sentences.</li>
+<li>Defaults the model guesses but no prompt or schema defines.</li>
+<li>Asking for all params at once, like a form.</li>
+<li>Same tool names in every sample, so the model overfits on names.</li>
+<li>Errors with no hint for recovery.</li>
 </ul>
               
             </div>

@@ -54,10 +54,6 @@
                 </li>
               </ul>
               <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../super-recipe/">Super Recipe</a>
-                </li>
-              </ul>
-              <ul>
                 <li class="toctree-l1"><a class="reference internal" href="../turn/">Turn</a>
                 </li>
               </ul>
@@ -78,9 +74,11 @@
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#3-naming-and-structural-conventions">3. Naming and structural conventions</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#4-enhanced-definitions-and-details">4. Enhanced Definitions and Details</a>
+    <li class="toctree-l2"><a class="reference internal" href="#4-enhanced-definitions-and-details">4. Enhanced definitions and details</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#5-function-output">5. Function output:</a>
+    <li class="toctree-l2"><a class="reference internal" href="#5-function-output">5. Function output</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#6-argument-edge-cases">6. Argument edge cases</a>
     </li>
     </ul>
                 </li>
@@ -111,6 +109,10 @@
               </ul>
               <ul>
                 <li class="toctree-l1"><a class="reference internal" href="../best-practices/">Best Practices</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../evaluation/">Evaluation</a>
                 </li>
               </ul>
               <ul>
@@ -145,32 +147,41 @@
 <ul>
 <li>Ensure functions have clear responsibilities and are not overly simplistic.</li>
 <li>Provide detailed descriptions for properties and parameters. Include enum values or range specifications where applicable.</li>
-<li>Avoid assuming default values without clear definitions. For instance, do not assume currency as USD.</li>
+<li>Avoid assuming default values without clear definitions. For instance, do not assume the currency is USD.</li>
 </ul>
 <h2 id="2-clarity-and-logical-flow">2. Clarity and logical flow</h2>
 <ul>
-<li>
-<p>Make sure inputs and outputs for tools are not redundant or identical. Each tool should add value or perform a transformation.</p>
-</li>
-<li>
-<p>Ensure prompts and instructions are clear, include realistic scenarios, and are easy to follow or implement.</p>
-</li>
+<li>Make sure the inputs and outputs of tools are not redundant or identical. Each tool should add value or perform a transformation.</li>
+<li>Ensure prompts and instructions are clear, include realistic scenarios, and are easy to follow or implement.</li>
 </ul>
 <h2 id="3-naming-and-structural-conventions">3. Naming and structural conventions</h2>
 <ul>
-<li>Use specific, descriptive terms in naming consistently.</li>
-<li>It's always better to have descriptive names and without any whitespaces.</li>
+<li>Use specific, descriptive terms consistently in names.</li>
+<li>Use descriptive names without whitespace.</li>
 </ul>
 <p>For example, use <code>build_strength</code> instead of <code>build strength</code>.</p>
-<h2 id="4-enhanced-definitions-and-details">4. Enhanced Definitions and Details</h2>
+<h2 id="4-enhanced-definitions-and-details">4. Enhanced definitions and details</h2>
 <ul>
-<li>Provide more detailed and actionable definitions for properties system instructions.</li>
-<li>Including a detailed desription might help the model to choose the correct function at the correct turn.</li>
+<li>Provide detailed, actionable definitions for properties and system instructions.</li>
+<li>A detailed description helps the model choose the correct function at the correct turn.</li>
 </ul>
-<h2 id="5-function-output">5. Function output:</h2>
+<h2 id="5-function-output">5. Function output</h2>
 <ul>
-<li>Some of the functions including output might help the model to plan chain of thoughts, i.e. <code>returns</code>, <code>output</code>, <code>yields</code>...
- -The output does not necessarily should be in a seperate field, becuase not all compilers allow it. Thus, it's also acceptable to include it in a description with a natural language instead of JSON.</li>
+<li>Describing a function's output helps the model plan its chain of thought, e.g. with <code>returns</code>, <code>output</code>, or <code>yields</code>.</li>
+<li>The output doesn't need its own field, because not all compilers allow it. It's also acceptable to describe it in natural language in the description instead of JSON.</li>
+</ul>
+<h2 id="6-argument-edge-cases">6. Argument edge cases</h2>
+<p>Training data must show the model handling each of these correctly:</p>
+<ul>
+<li><strong>Type coercion</strong>: <em>"two"</em> becomes <code>2</code>, <em>"tomorrow"</em> becomes an ISO date, <em>"yes"</em> becomes <code>true</code>.</li>
+<li><strong>Out of enum or range</strong>: <em>"size XXXL"</em> when the enum stops at <code>XL</code>. Tell the user the valid options; don't call the tool.</li>
+<li><strong>Ambiguous values</strong>: <em>"next Friday"</em>, <em>"Springfield"</em>, <em>"10 bucks"</em>. Resolve them from context (e.g. today's date in the system prompt) or ask.</li>
+<li><strong>Implicit units</strong>: currency, unit, timezone, and locale are used only when the schema or system prompt defines them.</li>
+<li><strong>Arrays and nested objects</strong>: produce the correct structure, and keep the order when it matters.</li>
+<li><strong>Special characters</strong>: quotes, emoji, unicode, and newlines are escaped correctly in the JSON args.</li>
+<li><strong>Precision</strong>: money, IDs with leading zeros, and large integers are kept exact. Use <code>string</code> types when needed.</li>
+<li><strong>Enums across languages</strong>: the user writes in any language, but enum values stay exactly as defined.</li>
+<li><strong>No hallucination</strong>: IDs, emails, prices, and dates come from the user, the system prompt, or a tool output.</li>
 </ul>
               
             </div>

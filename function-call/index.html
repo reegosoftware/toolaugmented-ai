@@ -54,10 +54,6 @@
                 </li>
               </ul>
               <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../super-recipe/">Super Recipe</a>
-                </li>
-              </ul>
-              <ul>
                 <li class="toctree-l1"><a class="reference internal" href="../turn/">Turn</a>
                 </li>
               </ul>
@@ -70,7 +66,17 @@
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#3-multiple-consecutive-function-calls">3. Multiple consecutive function calls</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#4-no-function-call">4. No function call</a>
+    <li class="toctree-l2"><a class="reference internal" href="#4-parallel-then-consecutive">4. Parallel then consecutive</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#5-conditional-call">5. Conditional call</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#6-loop-pagination">6. Loop / pagination</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#7-retry-and-fallback">7. Retry and fallback</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#8-zero-argument-call">8. Zero-argument call</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#9-no-function-call">9. No function call</a>
     </li>
     </ul>
                 </li>
@@ -112,6 +118,10 @@
                 </li>
               </ul>
               <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../evaluation/">Evaluation</a>
+                </li>
+              </ul>
+              <ul>
                 <li class="toctree-l1"><a class="reference internal" href="../about/">About</a>
                 </li>
               </ul>
@@ -139,29 +149,58 @@
             <div class="section" itemprop="articleBody">
               
                 <h1 id="function-call">Function Call</h1>
-<p>A function call is a suggestion call by the model to the system using the LLM by an API to be performed.</p>
+<p>A function call is a request from the model to the calling system (the app using the LLM API) to run a function.</p>
 <h2 id="1-single-function-call">1. Single function call</h2>
-<p>In a single function call; the user prompts such a query that requires exactly one function to be called.</p>
+<p>The user's query requires exactly one function call.</p>
 <blockquote>
 <p><em>"What is the weather like in Tokyo?"</em></p>
 </blockquote>
 <h2 id="2-multiple-parallel-function-calls">2. Multiple parallel function calls</h2>
-<p>In a multiple parallel function calls; the user prompts such a query that requires more than one function to e called.</p>
+<p>The user's query requires several independent function calls, made at once.</p>
 <blockquote>
 <p><em>"What is the weather like in Tokyo and Paris?"</em></p>
 </blockquote>
+<ul>
+<li>Same tool, many args: <em>"Convert 10, 20, 30 USD to EUR"</em> means 3 parallel calls, or 1 call if the parameter takes an array.</li>
+</ul>
 <h2 id="3-multiple-consecutive-function-calls">3. Multiple consecutive function calls</h2>
-<p>In a multiple consecutive function calls; the user prompts such a query that requires consecutive functions to be called; because the second function call would depend on the first one's output.</p>
+<p>The user's query requires functions to be called in sequence, because a later call depends on an earlier call's output.</p>
 <blockquote>
 <p><em>"Create an appointment for XYZ on day A or B."</em></p>
 <blockquote>
-<p>(First we need to check the availability of XYZ on day A and B to do so.)</p>
+<p>(First, the model needs to check XYZ's availability on day A and day B.)</p>
 </blockquote>
 </blockquote>
-<h2 id="4-no-function-call">4. No function call</h2>
-<p>In a no function call; the user prompts such a query that does not require a function to be called. The reason might be either because of a unsupported actions, or a query that might not require a function call at all.</p>
+<ul>
+<li>IDs and values must come from the earlier output; never invent them.</li>
+</ul>
+<h2 id="4-parallel-then-consecutive">4. Parallel then consecutive</h2>
+<p>The model fans out lookups, compares the results, then acts.</p>
+<blockquote>
+<p><em>"Find the cheapest of hotels A, B and C, and book it."</em></p>
+</blockquote>
+<h2 id="5-conditional-call">5. Conditional call</h2>
+<p>The next call depends on a tool result.</p>
+<blockquote>
+<p><em>"If it rains tomorrow, cancel my picnic booking."</em></p>
+</blockquote>
+<h2 id="6-loop-pagination">6. Loop / pagination</h2>
+<p>The model follows <code>next_page</code> (or a cursor) until done, and knows when to stop. It must not call again when the output hasn't changed.</p>
+<h2 id="7-retry-and-fallback">7. Retry and fallback</h2>
+<ul>
+<li><strong>Retry</strong>: on a validation error, fix the args and retry once. Never loop forever.</li>
+<li><strong>Fallback</strong>: if the primary tool fails, use an alternative tool or explain the failure.</li>
+</ul>
+<h2 id="8-zero-argument-call">8. Zero-argument call</h2>
+<p>A tool with no parameters is called with <code>{}</code>, e.g. <code>get_current_time()</code>.</p>
+<h2 id="9-no-function-call">9. No function call</h2>
+<p>The user's query does not require a function call. Either the query is answered from knowledge, or no available tool supports the action.</p>
 <blockquote>
 <p><em>"What are the signs of the rain?"</em></p>
+<p><em>"Book me a flight."</em> (no flight tool)</p>
+<blockquote>
+<p>The model says it can't do this, and never invents a tool.</p>
+</blockquote>
 </blockquote>
               
             </div>

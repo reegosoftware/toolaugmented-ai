@@ -54,10 +54,6 @@
                 </li>
               </ul>
               <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../super-recipe/">Super Recipe</a>
-                </li>
-              </ul>
-              <ul>
                 <li class="toctree-l1"><a class="reference internal" href="../turn/">Turn</a>
                 </li>
               </ul>
@@ -92,9 +88,11 @@
               <ul class="current">
                 <li class="toctree-l1 current"><a class="reference internal current" href="#">Recommendations for Improvement</a>
     <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#parameter-documentation">Parameter documentation:</a>
+    <li class="toctree-l2"><a class="reference internal" href="#parameter-documentation">Parameter documentation</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#error-handling">Error handling:</a>
+    <li class="toctree-l2"><a class="reference internal" href="#error-handling">Error handling</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#close-the-loop">Close the loop</a>
     </li>
     </ul>
                 </li>
@@ -105,6 +103,10 @@
               </ul>
               <ul>
                 <li class="toctree-l1"><a class="reference internal" href="../best-practices/">Best Practices</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../evaluation/">Evaluation</a>
                 </li>
               </ul>
               <ul>
@@ -135,11 +137,16 @@
             <div class="section" itemprop="articleBody">
               
                 <h1 id="recommendations-for-improvement">Recommendations for Improvement</h1>
-<h2 id="parameter-documentation">Parameter documentation:</h2>
+<h2 id="parameter-documentation">Parameter documentation</h2>
 <p>Enhance function signatures with explicit parameter documentation, including the type, purpose, and any default values.</p>
-<h2 id="error-handling">Error handling:</h2>
+<h2 id="error-handling">Error handling</h2>
 <ul>
-<li>In order to LLM to handle an error occurred after a bad call, it's a good practice to include how to handle certain type of errors in descriptions of either functions or parameters.</li>
+<li>To help the LLM handle an error after a bad call, describe how to handle certain types of errors in the function or parameter descriptions.</li>
+<li>Return errors with a machine-readable code and a <code>hint</code> (<a href="../best-practices-for-tool-output/">Tool Output</a>).</li>
+</ul>
+<h2 id="close-the-loop">Close the loop</h2>
+<ul>
+<li>Run the <a href="../evaluation/">evaluation</a>, find the weakest slice, and add seeds and variants for it.</li>
 </ul>
               
             </div>

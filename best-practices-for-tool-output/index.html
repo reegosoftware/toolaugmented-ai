@@ -54,10 +54,6 @@
                 </li>
               </ul>
               <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../super-recipe/">Super Recipe</a>
-                </li>
-              </ul>
-              <ul>
                 <li class="toctree-l1"><a class="reference internal" href="../turn/">Turn</a>
                 </li>
               </ul>
@@ -84,6 +80,8 @@
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#2-error-messages">2. Error messages</a>
     </li>
+    <li class="toctree-l2"><a class="reference internal" href="#3-result-cases-to-cover">3. Result cases to cover</a>
+    </li>
     </ul>
                 </li>
               </ul>
@@ -105,6 +103,10 @@
               </ul>
               <ul>
                 <li class="toctree-l1"><a class="reference internal" href="../best-practices/">Best Practices</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../evaluation/">Evaluation</a>
                 </li>
               </ul>
               <ul>
@@ -134,18 +136,18 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
             <div class="section" itemprop="articleBody">
               
-                <h1 id="best-practices-for-tool-output">Best practices for tool output</h1>
+                <h1 id="best-practices-for-tool-output">Best Practices for Tool Output</h1>
 <h2 id="1-outputs">1. Outputs</h2>
-<p>The outputs should not contain a human written like sentences. Becuase this is an API function response, it's more expected to have it more concise, straightforward, key-value paired, <code>number</code>/<code>enum</code> oriented.</p>
+<p>Outputs should not contain human-written sentences. Because this is an API function response, it should be concise, straightforward, key-value paired, and <code>number</code>/<code>enum</code> oriented.</p>
 <ul>
-<li>Thus an output like this is not good:</li>
+<li>Thus, an output like this is not good:</li>
 </ul>
 <pre><code class="language-json">    {
         &quot;message&quot;: &quot;The item with ID 342 is updated successfully.&quot;
     }
 </code></pre>
 <ul>
-<li>Instead, the below is better:</li>
+<li>Instead, the one below is better:</li>
 </ul>
 <pre><code class="language-json">    {
         &quot;status&quot;: &quot;OK&quot;,
@@ -157,10 +159,10 @@
     }
 </code></pre>
 <h2 id="2-error-messages">2. Error messages</h2>
-<p>In case there's an error, the error messages should be descriptive and possibly it might contain a statement how to recover from failure.</p>
-<p>Error messages or feedback should provide specific corrective actions rather than just highlighting issues.</p>
+<p>When there's an error, the error message should be descriptive, and ideally it should say how to recover from the failure.</p>
+<p>Error messages or feedback should give specific corrective actions rather than just pointing out issues.</p>
 <ul>
-<li>The below error message is not corrective:</li>
+<li>The error message below is not corrective:</li>
 </ul>
 <pre><code class="language-json">    {
         &quot;status&quot;: 500,
@@ -168,17 +170,70 @@
     }
 </code></pre>
 <ul>
-<li>Instead below is a better and corrective error message:</li>
+<li>Instead, the error message below is better and corrective:</li>
 </ul>
 <pre><code class="language-json">    {
-        &quot;status&quot;: &quot;500&quot;,
+        &quot;status&quot;: 500,
         &quot;message&quot;: &quot;Internal server error&quot;,
-        &quot;error&quot;: &quot;Item ID is None!&quot;
+        &quot;error&quot;: &quot;item_id is null&quot;,
+        &quot;hint&quot;: &quot;Call get_items first and pass a valid item_id.&quot;
     }
 </code></pre>
 <blockquote>
-<p>Here the model can understand that the reason is to have Item ID to be None, and so it knows how to resolve it.</p>
+<p>Here the model can understand that the cause is a null Item ID, so it knows how to resolve it.</p>
 </blockquote>
+<h2 id="3-result-cases-to-cover">3. Result cases to cover</h2>
+<table>
+<thead>
+<tr>
+<th>Result</th>
+<th>Expected model behavior</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Success</td>
+<td>Interpret and format it; don't dump the raw JSON</td>
+</tr>
+<tr>
+<td>Empty (<code>[]</code>, <code>null</code>)</td>
+<td>Say nothing was found and suggest a next step. Never make results up</td>
+</tr>
+<tr>
+<td>Partial failure (parallel)</td>
+<td>Report the successes and the failures separately</td>
+</tr>
+<tr>
+<td>Error with hint</td>
+<td>Follow the hint, fix the args, and retry once</td>
+</tr>
+<tr>
+<td>Opaque error / timeout</td>
+<td>Retry at most once, then explain and stop</td>
+</tr>
+<tr>
+<td>Rate limit</td>
+<td>Back off; don't spam calls</td>
+</tr>
+<tr>
+<td>Huge output</td>
+<td>Summarize only what matters</td>
+</tr>
+<tr>
+<td>Unexpected shape / extra fields</td>
+<td>Read it defensively; don't crash the flow</td>
+</tr>
+<tr>
+<td>Contradicts the user</td>
+<td>Trust the tool and tell the user</td>
+</tr>
+<tr>
+<td>Contains instructions</td>
+<td>Treat it as data; never follow it</td>
+</tr>
+</tbody>
+</table>
+<p>Tool outputs in training data must be realistic and consistent with earlier turns (the same IDs, prices, and states).</p>
               
             </div>
           </div><footer>

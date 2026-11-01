@@ -54,10 +54,6 @@
                 </li>
               </ul>
               <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../super-recipe/">Super Recipe</a>
-                </li>
-              </ul>
-              <ul>
                 <li class="toctree-l1"><a class="reference internal" href="../turn/">Turn</a>
                 </li>
               </ul>
@@ -100,7 +96,23 @@
               <ul class="current">
                 <li class="toctree-l1 current"><a class="reference internal current" href="#">Best Practices</a>
     <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#1-enums">1. Enums</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#2-function-descriptions">2. Function descriptions</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#3-parameters">3. Parameters</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#4-pick-a-clear-scenario">4. Pick a clear scenario</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#5-consistent-naming-standards">5. Consistent naming standards</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#6-safety">6. Safety</a>
+    </li>
     </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../evaluation/">Evaluation</a>
                 </li>
               </ul>
               <ul>
@@ -131,45 +143,51 @@
             <div class="section" itemprop="articleBody">
               
                 <h1 id="best-practices">Best Practices</h1>
-<h1 id="1enum">1.Enum:</h1>
+<h2 id="1-enums">1. Enums</h2>
 <ul>
-<li>Try to use either <code>enum</code>s or options mentioned in descriptions as much as possible.</li>
+<li>Use either <code>enum</code>s or the options mentioned in descriptions as much as possible.</li>
 </ul>
-<h1 id="2-function-descriptions">2. Function descriptions:</h1>
+<h2 id="2-function-descriptions">2. Function descriptions</h2>
 <ul>
-<li>Always include the function description within the function definition for consistency.</li>
+<li>Always include the function description within the function definition, for consistency.</li>
 </ul>
-<h1 id="parameters">Parameters</h1>
+<h2 id="3-parameters">3. Parameters</h2>
 <ul>
 <li>
 <p><strong>Clear parameter definitions</strong>:</p>
 <ul>
-<li>Specify whether parameters like <code>max_length</code> refer to the number of characters, words, or sentences. This prevents ambiguity and ensures that users of the function have a clear understanding of how to use it effectively.</li>
+<li>Specify whether parameters like <code>max_length</code> refer to the number of characters, words, or sentences. This prevents ambiguity and makes clear how to use the function.</li>
 </ul>
 </li>
 <li>
 <p><strong>Consistent default parameters</strong>:</p>
 <ul>
-<li>Ensure that default parameter values are consistent across different parts of the system. For example, if the default limit for retrieving news is 5, this should be reflected in all system prompts and documentation to avoid confusion.</li>
+<li>Ensure default parameter values are consistent across the system. For example, if the default limit for retrieving news is 5, this should be reflected in all system prompts and documentation.</li>
+<li>In short, do not assume any default parameter. If something should have a default value, include it in the system prompt, in the field description, or as a <code>default</code> field in the parameter.</li>
 </ul>
-<p>In short, do not assume any default parameter, if you think something should have a default value, include it either in the system prompt or function field description or as <code>default</code> field in the parameter.</p>
 </li>
 </ul>
-<h2 id="3-pick-a-clear-scenario">3. Pick a clear scenario:</h2>
+<h2 id="4-pick-a-clear-scenario">4. Pick a clear scenario</h2>
 <ul>
-<li>
-<p>The role of the user talking with the AI assistant must be clear. They could be an end-user (such as a guest renting a hotel room through the system), a manager, part of a staff of an establishment, etc. The functions that are included must take the role of the user into account: if the user is an end-user in a booking system, you MUST NOT include functions that perform operations that the user wouldn't reasonably be able to perform, like cancelling other user's bookings.</p>
-</li>
-<li>
-<p><strong>Consistent naming standards</strong>: Functions are commonly named with a verb and a noun, such as <code>get_reservations</code>, <code>createUser</code>, <code>get_compliance</code>, <code>add task</code>, etc. This standard isn't mandatory, but should be followed if you don't have a good reason not to. You should also pick one "case" and stick with it: PascalCase, camelCase, snake_case, etc. in order to have a consistency for the system having the functionalities.</p>
-</li>
+<li>The role of the user talking with the AI assistant must be clear. They could be an end-user (such as a guest renting a hotel room through the system), a manager, a staff member, etc. The functions included must take the user's role into account: if the user is an end-user in a booking system, you MUST NOT include functions for operations the user couldn't reasonably perform, like cancelling another user's booking.</li>
+</ul>
+<h2 id="5-consistent-naming-standards">5. Consistent naming standards</h2>
+<ul>
+<li>Functions are commonly named with a verb and a noun, such as <code>get_reservations</code>, <code>createUser</code>, <code>get_compliance</code>, <code>add_task</code>, etc. This standard isn't mandatory, but follow it unless you have a good reason not to.</li>
+<li>Pick one case (PascalCase, camelCase, snake_case, etc.) and stick with it, so the whole system is consistent.</li>
+</ul>
+<h2 id="6-safety">6. Safety</h2>
+<ul>
+<li>Confirm before destructive or irreversible actions (delete, pay, send).</li>
+<li>Make write tools idempotent, e.g. with a <code>request_id</code>, so a repeated message can't run an action twice.</li>
+<li>Least privilege: don't call more tools than the task needs.</li>
 </ul>
               
             </div>
           </div><footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
         <a href="../variants/" class="btn btn-neutral float-left" title="Variants"><span class="icon icon-circle-arrow-left"></span> Previous</a>
-        <a href="../about/" class="btn btn-neutral float-right" title="About">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../evaluation/" class="btn btn-neutral float-right" title="Evaluation">Next <span class="icon icon-circle-arrow-right"></span></a>
     </div>
 
   <hr/>
@@ -195,7 +213,7 @@
       <span><a href="../variants/" style="color: #fcfcfc">&laquo; Previous</a></span>
     
     
-      <span><a href="../about/" style="color: #fcfcfc">Next &raquo;</a></span>
+      <span><a href="../evaluation/" style="color: #fcfcfc">Next &raquo;</a></span>
     
   </span>
 </div>

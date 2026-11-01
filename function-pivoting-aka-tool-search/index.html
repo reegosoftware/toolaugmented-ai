@@ -54,10 +54,6 @@
                 </li>
               </ul>
               <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../super-recipe/">Super Recipe</a>
-                </li>
-              </ul>
-              <ul>
                 <li class="toctree-l1"><a class="reference internal" href="../turn/">Turn</a>
                 </li>
               </ul>
@@ -75,6 +71,10 @@
     <li class="toctree-l3"><a class="reference internal" href="#drawback">Drawback:</a>
     </li>
         </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#2-large-toolsets">2. Large toolsets</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#3-distractor-tools">3. Distractor tools</a>
     </li>
     </ul>
                 </li>
@@ -112,6 +112,10 @@
                 </li>
               </ul>
               <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../evaluation/">Evaluation</a>
+                </li>
+              </ul>
+              <ul>
                 <li class="toctree-l1"><a class="reference internal" href="../about/">About</a>
                 </li>
               </ul>
@@ -140,19 +144,31 @@
               
                 <h1 id="function-pivoting-aka-tool-search">Function Pivoting aka Tool Search</h1>
 <h2 id="1-pivoting-a-function">1. Pivoting a function</h2>
-<p>JSON Schema pivoting is a way that there is a one Tool Search function which will search withing the tools and output the most relevant one so that the model can use that outputted function in next call.</p>
+<p>JSON Schema pivoting means having one Tool Search function that searches within the tools and outputs the most relevant one, so that the model can call that function next.</p>
 <h3 id="benefit">Benefit:</h3>
 <ul>
 <li>
-<p>Picking the right function will be under your control instead of LLMs.</p>
+<p>Picking the right function is under your control instead of the LLM's.</p>
 </li>
 <li>
-<p>When there are too many functions; becuase you don't need to send them all, it will save a significant amount of tokens which will reduce the cost.</p>
+<p>When there are many functions, you don't need to send them all. This saves a significant number of tokens and reduces cost.</p>
 </li>
 </ul>
 <h3 id="drawback">Drawback:</h3>
 <ul>
-<li>It causes at least 2 function calls in each case, so there will always be a delay. Moreover, it might not be that right to leave the decision of the functions to your app. LLMs are obviously better to choose the correct function with correct parameters. Lastly, many LLMs are not trained in that way, this would be just an experiment.</li>
+<li>Every request needs at least 2 function calls, so there is always extra delay.</li>
+<li>Your app, rather than the LLM, decides which function fits. LLMs are usually better at choosing the correct function with the correct parameters.</li>
+<li>Many LLMs are not trained this way, so this approach is experimental.</li>
+</ul>
+<h2 id="2-large-toolsets">2. Large toolsets</h2>
+<ul>
+<li>Train with long tool lists (50-1000+) so that selection holds up at scale.</li>
+<li>Include samples where <code>search_tools</code> returns several candidates, or none.</li>
+</ul>
+<h2 id="3-distractor-tools">3. Distractor tools</h2>
+<ul>
+<li>Add near-duplicates such as <code>get_user</code>, <code>get_users</code>, and <code>search_user</code>. The model must choose by the description, not by the name.</li>
+<li>Rename tools across variants so the model doesn't overfit on names.</li>
 </ul>
               
             </div>
