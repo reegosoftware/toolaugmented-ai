@@ -4,6 +4,6 @@
 
 Its companion, **[toolcalling.ai](https://toolcalling.ai/)**, is a workspace for building and debugging function calls, with a model **Arena** and a community **leaderboard** ranked by blind votes on real tool-calling tasks.
 
-## Built by reego.ai
+## Built by reego.software
 
-Tool Augmented AI and toolcalling.ai are built by **[reego.ai](https://www.reego.ai)**.
+Tool Augmented AI and toolcalling.ai are built by **[reego.software](https://www.reego.software)**, also known as **[reego.ai](https://www.reego.ai)**.
