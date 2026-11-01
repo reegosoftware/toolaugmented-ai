@@ -1,24 +1,32 @@
 # Best Practices
-# 1.Enum:
 
-- Try to use either `enum`s or options mentioned in descriptions as much as possible.
+## 1. Enums
 
-# 2. Function descriptions:
+- Use either `enum`s or the options mentioned in descriptions as much as possible.
 
-- Always include the function description within the function definition for consistency.
+## 2. Function descriptions
 
-# Parameters 
+- Always include the function description within the function definition, for consistency.
+
+## 3. Parameters
 - **Clear parameter definitions**:
-    - Specify whether parameters like `max_length` refer to the number of characters, words, or sentences. This prevents ambiguity and ensures that users of the function have a clear understanding of how to use it effectively.
-
+    - Specify whether parameters like `max_length` refer to the number of characters, words, or sentences. This prevents ambiguity and makes clear how to use the function.
 
 - **Consistent default parameters**:
-    - Ensure that default parameter values are consistent across different parts of the system. For example, if the default limit for retrieving news is 5, this should be reflected in all system prompts and documentation to avoid confusion.
+    - Ensure default parameter values are consistent across the system. For example, if the default limit for retrieving news is 5, this should be reflected in all system prompts and documentation.
+    - In short, do not assume any default parameter. If something should have a default value, include it in the system prompt, in the field description, or as a `default` field in the parameter.
 
-    In short, do not assume any default parameter, if you think something should have a default value, include it either in the system prompt or function field description or as `default` field in the parameter.
+## 4. Pick a clear scenario
 
-## 3. Pick a clear scenario:
+- The role of the user talking with the AI assistant must be clear. They could be an end-user (such as a guest renting a hotel room through the system), a manager, a staff member, etc. The functions included must take the user's role into account: if the user is an end-user in a booking system, you MUST NOT include functions for operations the user couldn't reasonably perform, like cancelling another user's booking.
 
-- The role of the user talking with the AI assistant must be clear. They could be an end-user (such as a guest renting a hotel room through the system), a manager, part of a staff of an establishment, etc. The functions that are included must take the role of the user into account: if the user is an end-user in a booking system, you MUST NOT include functions that perform operations that the user wouldn't reasonably be able to perform, like cancelling other user's bookings.
+## 5. Consistent naming standards
 
-6. **Consistent naming standards**: Functions are commonly named with a verb and a noun, such as `get_reservations`, `createUser`, `get_compliance`, `add task`, etc. This standard isn't mandatory, but should be followed if you don't have a good reason not to. You should also pick one "case" and stick with it: PascalCase, camelCase, snake_case, etc. in order to have a consistency for the system having the functionalities.
+- Functions are commonly named with a verb and a noun, such as `get_reservations`, `createUser`, `get_compliance`, `add_task`, etc. This standard isn't mandatory, but follow it unless you have a good reason not to.
+- Pick one case (PascalCase, camelCase, snake_case, etc.) and stick with it, so the whole system is consistent.
+
+## 6. Safety
+
+- Confirm before destructive or irreversible actions (delete, pay, send).
+- Make write tools idempotent, e.g. with a `request_id`, so a repeated message can't run an action twice.
+- Least privilege: don't call more tools than the task needs.

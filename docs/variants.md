@@ -1,38 +1,45 @@
 # Variants
 
-From an original task, 4-5 variants might be created.
+Create 4-5 variants from each original task.
 
 ## To create variants:
 
 ### Variant with system instructions:
 
-Slightly change the system prompt with a variant scenario.
+Slightly change the system prompt to a variant scenario.
 
-- Behavioral: Include different kind of behavior e.g. assistant should be concise, assistant should be kind etc
-- Data related: Change a data value such as date, name, email, phone etc.
+- Behavioral: include a different kind of behavior, e.g. the assistant should be concise, the assistant should be kind, etc.
+- Data related: change a data value such as a date, name, email, or phone number.
+- Policy related: change a default, a confirmation rule, or the user's role.
 
 ### Variant with user persona:
 
-Use exactly same schema and system prompt but change the user behavior.
+Use exactly the same schema and system prompt, but change the user's behavior.
 
-- Users might have different personas e.g. user might not provide all the informations or they might provide all at once
+- Users may have different personas, e.g. a user may hold back some information, or provide it all at once.
 
-### Variant with json schema:
+### Variant with JSON schema:
 
-Slightly change the JSON schema while keepin the res as same.
+Slightly change the JSON schema while keeping the rest the same.
 
-- Update json schema with competing or mixed functions (Say if original includes 3 functions, this might include 5-6 functions)
+- Update the JSON schema with competing or mixed functions (if the original includes 3 functions, the variant might include 5-6).
+- Rename tools, reorder params, or change the param style, keeping the same intent, so the model doesn't overfit on names.
 
 ### Variant with adversarial cases:
 
-Unhappy cases, where the assistant might not able to fulfill the request at once, or might give up or might fail nicely, recover from failure etc.
+Unhappy cases, where the assistant can't fulfill the request at once, gives up, fails gracefully, or recovers from failure.
+
+### Variant with tool results:
+
+Keep the conversation the same, but change the tool result: empty, partial failure, error with hint, timeout, or huge output.
 
 ### Variant with noisy user prompt:
 
-Users sometimes might ask same thing but with different wording and/or with a noisy data
+Users may ask for the same thing with different wording and/or noisy data.
 
 - Some users might be toxic
 - Some users might use slang
-- Some developers might include user prompt in JSON/HTML format
+- Some developers might include the user prompt in JSON/HTML format
 - Some users might be verbose
-- Some users might use some shortcuts e.g. _"properties.color = red"_, instead of saying _"give me red products"_
+- Some users might use shortcuts, e.g. _"properties.color = red"_ instead of _"give me red products"_
+- Some users might write in another language, or mix languages
