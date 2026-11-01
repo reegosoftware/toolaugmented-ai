@@ -1,33 +1,77 @@
+---
+title: Function Calling / Tool Calling Reference
+---
+
 # Tool Augmented AI
 
-## Try it live: [toolcalling.ai](https://toolcalling.ai/)
+**Everything about function calling, aka tool calling, aka tool use, in one place.** How it works, how to use it with every major provider, how to build training data, how to fine-tune a model for it, and how to evaluate it.
 
-> **Don't just read about function calling. Run it.**
->
-> Bring your JSON schema and a prompt, run a real function call, and see which tools the model picks and with which arguments. Then **vote** on the best response, and help everyone see which models really get tool calling right.
->
-> **[Run a function call and vote at toolcalling.ai →](https://toolcalling.ai/)**
+!!! tip "Try it live: [toolcalling.ai](https://toolcalling.ai/)"
 
-- **Test your schema**: catch vague descriptions, missing enums, and guessed defaults before your users do.
-- **Compare models**: single, parallel, consecutive, and no-call cases, side by side.
-- **Vote**: your votes shape a community view of which models handle tool calling best.
+    **Don't just read about function calling. Run it.**
 
----
+    Bring your JSON schema and a prompt, run a real function call, and see which tools the model picks and with which arguments. Then go to the **Arena**: two anonymous models answer the same tool-calling task, and you **vote** for the better one. Every blind vote feeds the community **leaderboard** of which models really get tool calling right.
+
+    [:material-rocket-launch: Open the workspace](https://app.toolcalling.ai/){ .md-button .md-button--primary }
+    [:material-sword-cross: Vote in the Arena](https://app.toolcalling.ai/arena){ .md-button }
+    [:material-trophy: Leaderboard](https://toolcalling.ai/leaderboard){ .md-button }
+
+    - **Workspace**: build and debug function calls; catch vague descriptions, missing enums, and guessed defaults before your users do.
+    - **Arena**: blind, pairwise comparison of models on real tool-calling tasks.
+    - **Leaderboard**: models ranked by community votes. Free to start.
+
+## Start here
+
+<div class="grid cards" markdown>
+
+-   :material-school: **Learn**
+
+    ---
+
+    What function calling is, the request/response loop, and how every provider differs.
+
+    [What is Function Calling](concepts.md) · [Using it](usage.md) · [Providers](providers.md) · [MCP](mcp.md)
+
+-   :material-database-cog: **Build training data**
+
+    ---
+
+    The end-to-end recipe: coverage matrix, every edge and advanced case, dataset mix, quality gates.
+
+    [The Recipe](recipe.md) · [Training Data](best-practices-for-training-data.md)
+
+-   :material-tune: **Fine-tune and serve**
+
+    ---
+
+    Chat templates, loss masking, LoRA, DPO/RL, then serving your model with tool parsing.
+
+    [Fine-Tuning Guide](fine-tuning.md)
+
+-   :material-chart-bar: **Evaluate and benchmark**
+
+    ---
+
+    Metrics, offline benchmarks, and live head-to-head voting at toolcalling.ai.
+
+    [Evaluation](evaluation.md) · [Benchmarks](benchmarks.md)
+
+</div>
 
 ## Function/Tool Calling
 
-Augmenting Large Language Models (LLMs) with Function Calls is a crucial technique that enables the integration of diverse data sources and enhances their performance. This process involves converting unstructured or noisy input data, such as natural language text, web pages, or even sensor readings, into structured formats like JSON.
+Augmenting Large Language Models (LLMs) with Function Calls is a crucial technique that enables the integration of diverse data sources and enhances their performance. This process involves converting unstructured or noisy input data, such as natural language text, web pages, or even sensor readings, into structured formats like JSON. The model **never runs the function itself**: it proposes a call, your code runs it, and the model uses the result. See [What is Function Calling](concepts.md).
 
 ## Recipe at a glance
 
 1. **Scenario**: pick a domain and the user's role. Expose only the tools that role may use ([Best Practices](best-practices.md)).
 2. **Schema**: write 3-8 tools, plus 2-5 similar **distractor** tools ([Schema](best-practices-for-schema.md)).
 3. **System prompt**: tone, policies, defaults, confirmation rules, and out-of-scope behavior ([System Instruction](best-practices-for-system-instruction.md)).
-4. **Seed conversations**: one per combination of the taxonomies below.
+4. **Seed conversations**: one per combination of the taxonomies below ([The Recipe](recipe.md)).
 5. **Variants**: 4-5 per seed ([Variants](variants.md)).
 6. **Validate**: run the quality gates, balance the mix, and deduplicate ([Training Data](best-practices-for-training-data.md)).
-7. **Evaluate** per slice, on held-out unseen tools. Turn the failures into new seeds ([Evaluation](evaluation.md)).
-8. **Try it live**: run your schema at [toolcalling.ai](https://toolcalling.ai/) and vote for the best responses.
+7. **Fine-tune and serve** ([Fine-Tuning Guide](fine-tuning.md)).
+8. **Evaluate** per slice, on held-out unseen tools ([Evaluation](evaluation.md)), and benchmark live at [toolcalling.ai](https://toolcalling.ai/).
 
 ## Fine Tuning a Model for Function Calling
 To train a model to have Tool Calling capability, it's a best practice to cover the conversation examples with the taxonomies/domains below.
@@ -69,3 +113,5 @@ To train a model to have Tool Calling capability, it's a best practice to cover 
 - **Education**
 - **Healthcare**: Diagnose diseases and generate treatment plans.
 - **Text Analysis**: Sentiment analysis, entity extraction, and text classification
+- **Developer tools**: code search, CI, ticketing, databases
+- **Personal assistant**: calendar, email, travel, smart home

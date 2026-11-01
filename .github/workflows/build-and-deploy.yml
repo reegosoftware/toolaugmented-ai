@@ -5,6 +5,8 @@ on:
       - main
     paths:
       - 'docs/**'
+      - 'mkdocs.yml'
+      - '.github/workflows/**'
   workflow_dispatch:
 permissions:
   contents: write
@@ -22,7 +24,7 @@ jobs:
           fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
-          python-version: 3.9
+          python-version: '3.12'
       - run: pip install \
             mkdocs-material
       - run: mkdocs gh-deploy --config-file ./mkdocs.yml --force
