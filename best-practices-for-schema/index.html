@@ -9,7 +9,7 @@
         <meta name="description" content="The function calling / tool calling reference. How it works, how to use it with every provider, how to build training data, fine-tune and evaluate models.">
       
       
-        <meta name="author" content="Reego Software">
+        <meta name="author" content="reego.ai">
       
       
         <link rel="canonical" href="https://toolaugmented.ai/best-practices-for-schema/">
@@ -1731,7 +1731,6 @@
 <h2 id="2-clarity-and-logical-flow">2. Clarity and logical flow<a class="headerlink" href="#2-clarity-and-logical-flow" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Make sure the inputs and outputs of tools are not redundant or identical. Each tool should add value or perform a transformation.</li>
-<li>Ensure prompts and instructions are clear, include realistic scenarios, and are easy to follow or implement.</li>
 </ul>
 <h2 id="3-naming-and-structural-conventions">3. Naming and structural conventions<a class="headerlink" href="#3-naming-and-structural-conventions" title="Permanent link">&para;</a></h2>
 <ul>
@@ -1741,13 +1740,13 @@
 <p>For example, use <code>build_strength</code> instead of <code>build strength</code>.</p>
 <h2 id="4-enhanced-definitions-and-details">4. Enhanced definitions and details<a class="headerlink" href="#4-enhanced-definitions-and-details" title="Permanent link">&para;</a></h2>
 <ul>
-<li>Provide detailed, actionable definitions for properties and system instructions.</li>
-<li>A detailed description helps the model choose the correct function at the correct turn.</li>
+<li>Give every property a detailed, actionable description: purpose, format, unit, example.</li>
+<li>A detailed function description helps the model choose the correct function at the correct turn. Say when to use it and when <strong>not</strong> to.</li>
 </ul>
 <h2 id="5-function-output">5. Function output<a class="headerlink" href="#5-function-output" title="Permanent link">&para;</a></h2>
 <ul>
-<li>Describing a function's output helps the model plan its chain of thought, e.g. with <code>returns</code>, <code>output</code>, or <code>yields</code>.</li>
-<li>The output doesn't need its own field, because not all compilers allow it. It's also acceptable to describe it in natural language in the description instead of JSON.</li>
+<li>Describe what the function <strong>returns</strong> (<code>returns</code>, <code>output</code>, <code>yields</code>). Knowing the output helps the model plan the next step.</li>
+<li>Not every API has an output-schema field (MCP has <code>outputSchema</code>, most chat APIs don't). Describing the return value in plain language inside the description works everywhere.</li>
 </ul>
 <h2 id="6-argument-edge-cases">6. Argument edge cases<a class="headerlink" href="#6-argument-edge-cases" title="Permanent link">&para;</a></h2>
 <p>Training data must show the model handling each of these correctly:</p>
@@ -1840,6 +1839,10 @@
     <div class="md-footer-meta__inner md-grid">
       <div class="md-copyright">
   
+    <div class="md-copyright__highlight">
+      Built by <a href="https://www.reego.ai">reego.ai</a> · Try function calling at <a href="https://toolcalling.ai/">toolcalling.ai</a>
+    </div>
+  
   
     Made with
     <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
@@ -1886,6 +1889,8 @@
     
     
       <script src="../assets/javascripts/bundle.c21346df.min.js"></script>
+      
+        <script src="../javascripts/external-links.js"></script>
       
     
   </body>

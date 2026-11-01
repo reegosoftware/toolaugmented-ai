@@ -9,7 +9,7 @@
         <meta name="description" content="The function calling / tool calling reference. How it works, how to use it with every provider, how to build training data, fine-tune and evaluate models.">
       
       
-        <meta name="author" content="Reego Software">
+        <meta name="author" content="reego.ai">
       
       
         <link rel="canonical" href="https://toolaugmented.ai/recommendations-for-improvement/">
@@ -1232,21 +1232,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#parameter-documentation" class="md-nav__link">
+  <a href="#common-fixes" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Parameter documentation
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#error-handling" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Error handling
+        Common fixes
       
     </span>
   </a>
@@ -1606,21 +1595,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#parameter-documentation" class="md-nav__link">
+  <a href="#common-fixes" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Parameter documentation
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#error-handling" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Error handling
+        Common fixes
       
     </span>
   </a>
@@ -1656,17 +1634,62 @@
 
 
 <h1 id="recommendations-for-improvement">Recommendations for Improvement<a class="headerlink" href="#recommendations-for-improvement" title="Permanent link">&para;</a></h1>
-<h2 id="parameter-documentation">Parameter documentation<a class="headerlink" href="#parameter-documentation" title="Permanent link">&para;</a></h2>
-<p>Enhance function signatures with explicit parameter documentation, including the type, purpose, and any default values.</p>
-<h2 id="error-handling">Error handling<a class="headerlink" href="#error-handling" title="Permanent link">&para;</a></h2>
+<p>When a function-calling system misbehaves, fix it in this order. The cheapest fix comes first, and each layer is easier to change than the next.</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Layer</th>
+<th>Fix here when...</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><strong>Tool descriptions &amp; schema</strong></td>
+<td>Wrong tool chosen, wrong or invented arguments, wrong units or formats</td>
+</tr>
+<tr>
+<td>2</td>
+<td><strong>System prompt</strong></td>
+<td>Wrong policy behavior: no confirmation, guesses instead of asking, wrong tone, out-of-scope requests</td>
+</tr>
+<tr>
+<td>3</td>
+<td><strong>Tool output</strong></td>
+<td>The model can't recover from errors, misreads results, or dumps raw JSON</td>
+</tr>
+<tr>
+<td>4</td>
+<td><strong>Orchestration code</strong></td>
+<td>Loops, too many tools, parallel calls mishandled, context overflow</td>
+</tr>
+<tr>
+<td>5</td>
+<td><strong>Model choice</strong></td>
+<td>The failures persist across the layers above (compare models on the <a href="https://toolcalling.ai/leaderboard">leaderboard</a>)</td>
+</tr>
+<tr>
+<td>6</td>
+<td><strong>Training data / fine-tuning</strong></td>
+<td>You need a small or private model, or a behavior prompting can't fix (<a href="../fine-tuning/">Fine-Tuning</a>)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="common-fixes">Common fixes<a class="headerlink" href="#common-fixes" title="Permanent link">&para;</a></h2>
 <ul>
-<li>To help the LLM handle an error after a bad call, describe how to handle certain types of errors in the function or parameter descriptions.</li>
-<li>Return errors with a machine-readable code and a <code>hint</code> (<a href="../best-practices-for-tool-output/">Tool Output</a>).</li>
+<li><strong>Document every parameter</strong>: type, purpose, format, unit, and default (<a href="../best-practices-for-schema/">Schema</a>).</li>
+<li><strong>Teach error handling</strong>: say in the description how to handle each error, and return errors with a machine-readable code and a <code>hint</code> (<a href="../best-practices-for-tool-output/">Tool Output</a>).</li>
+<li><strong>Add "when not to use" lines</strong> to tools that get confused with each other.</li>
+<li><strong>Add explicit rules</strong> to the system prompt for every behavior you expect (<a href="../best-practices-for-system-instruction/">System Instruction</a>).</li>
 </ul>
 <h2 id="close-the-loop">Close the loop<a class="headerlink" href="#close-the-loop" title="Permanent link">&para;</a></h2>
-<ul>
-<li>Run the <a href="../evaluation/">evaluation</a>, find the weakest slice, and add seeds and variants for it.</li>
-</ul>
+<ol>
+<li>Collect failures from production logs and the <a href="https://app.toolcalling.ai/arena">Arena</a>.</li>
+<li>Add each one to your eval set (<a href="../evaluation/">Evaluation</a>).</li>
+<li>Fix it at the lowest layer that works, and re-run the eval.</li>
+<li>If you fine-tune, turn the failures into new seeds and <a href="../variants/">variants</a>.</li>
+</ol>
 
 
 
@@ -1745,6 +1768,10 @@
     <div class="md-footer-meta__inner md-grid">
       <div class="md-copyright">
   
+    <div class="md-copyright__highlight">
+      Built by <a href="https://www.reego.ai">reego.ai</a> · Try function calling at <a href="https://toolcalling.ai/">toolcalling.ai</a>
+    </div>
+  
   
     Made with
     <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
@@ -1791,6 +1818,8 @@
     
     
       <script src="../assets/javascripts/bundle.c21346df.min.js"></script>
+      
+        <script src="../javascripts/external-links.js"></script>
       
     
   </body>

@@ -9,7 +9,7 @@
         <meta name="description" content="The function calling / tool calling reference. How it works, how to use it with every provider, how to build training data, fine-tune and evaluate models.">
       
       
-        <meta name="author" content="Reego Software">
+        <meta name="author" content="reego.ai">
       
       
         <link rel="canonical" href="https://toolaugmented.ai/">
@@ -491,10 +491,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#functiontool-calling" class="md-nav__link">
+  <a href="#what-is-function-calling" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Function/Tool Calling
+        What is function calling?
       
     </span>
   </a>
@@ -513,15 +513,15 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#fine-tuning-a-model-for-function-calling" class="md-nav__link">
+  <a href="#dataset-taxonomy" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Fine Tuning a Model for Function Calling
+        Dataset taxonomy
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Fine Tuning a Model for Function Calling">
+    <nav class="md-nav" aria-label="Dataset taxonomy">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -547,10 +547,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#3-adversarial-user-cases" class="md-nav__link">
+  <a href="#3-adversarial-user-cases-details" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3. Adversarial User Cases
+        3. Adversarial User Cases (details)
       
     </span>
   </a>
@@ -572,7 +572,7 @@
   <a href="#5-major-domains" class="md-nav__link">
     <span class="md-ellipsis">
       
-        5. Major Domains:
+        5. Major Domains
       
     </span>
   </a>
@@ -1682,10 +1682,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#functiontool-calling" class="md-nav__link">
+  <a href="#what-is-function-calling" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Function/Tool Calling
+        What is function calling?
       
     </span>
   </a>
@@ -1704,15 +1704,15 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#fine-tuning-a-model-for-function-calling" class="md-nav__link">
+  <a href="#dataset-taxonomy" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Fine Tuning a Model for Function Calling
+        Dataset taxonomy
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Fine Tuning a Model for Function Calling">
+    <nav class="md-nav" aria-label="Dataset taxonomy">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1738,10 +1738,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#3-adversarial-user-cases" class="md-nav__link">
+  <a href="#3-adversarial-user-cases-details" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3. Adversarial User Cases
+        3. Adversarial User Cases (details)
       
     </span>
   </a>
@@ -1763,7 +1763,7 @@
   <a href="#5-major-domains" class="md-nav__link">
     <span class="md-ellipsis">
       
-        5. Major Domains:
+        5. Major Domains
       
     </span>
   </a>
@@ -1836,8 +1836,8 @@
 </li>
 </ul>
 </div>
-<h2 id="functiontool-calling">Function/Tool Calling<a class="headerlink" href="#functiontool-calling" title="Permanent link">&para;</a></h2>
-<p>Augmenting Large Language Models (LLMs) with Function Calls is a crucial technique that enables the integration of diverse data sources and enhances their performance. This process involves converting unstructured or noisy input data, such as natural language text, web pages, or even sensor readings, into structured formats like JSON. The model <strong>never runs the function itself</strong>: it proposes a call, your code runs it, and the model uses the result. See <a href="concepts/">What is Function Calling</a>.</p>
+<h2 id="what-is-function-calling">What is function calling?<a class="headerlink" href="#what-is-function-calling" title="Permanent link">&para;</a></h2>
+<p>Function calling connects a language model to the outside world: live data, APIs, databases, and actions. The model reads the user's message, chooses a function, and fills in its arguments as JSON. It can also turn unstructured or noisy input (natural language, web pages, documents) into structured data. The model <strong>never runs the function itself</strong>: it proposes a call, your code runs it, and the model uses the result. See <a href="concepts/">What is Function Calling</a>.</p>
 <h2 id="recipe-at-a-glance">Recipe at a glance<a class="headerlink" href="#recipe-at-a-glance" title="Permanent link">&para;</a></h2>
 <ol>
 <li><strong>Scenario</strong>: pick a domain and the user's role. Expose only the tools that role may use (<a href="best-practices/">Best Practices</a>).</li>
@@ -1849,22 +1849,22 @@
 <li><strong>Fine-tune and serve</strong> (<a href="fine-tuning/">Fine-Tuning Guide</a>).</li>
 <li><strong>Evaluate</strong> per slice, on held-out unseen tools (<a href="evaluation/">Evaluation</a>), and benchmark live at <a href="https://toolcalling.ai/">toolcalling.ai</a>.</li>
 </ol>
-<h2 id="fine-tuning-a-model-for-function-calling">Fine Tuning a Model for Function Calling<a class="headerlink" href="#fine-tuning-a-model-for-function-calling" title="Permanent link">&para;</a></h2>
-<p>To train a model to have Tool Calling capability, it's a best practice to cover the conversation examples with the taxonomies/domains below.</p>
+<h2 id="dataset-taxonomy">Dataset taxonomy<a class="headerlink" href="#dataset-taxonomy" title="Permanent link">&para;</a></h2>
+<p>To train a model for tool calling, cover every value of each taxonomy below in your conversation examples. <a href="recipe/">The Recipe</a> turns this into a coverage matrix.</p>
 <h3 id="1-turn">1. Turn<a class="headerlink" href="#1-turn" title="Permanent link">&para;</a></h3>
 <ul>
-<li><code>single turn</code>: The user asks only one question and leaves the conversation.</li>
-<li><code>multiple turns</code>: The user asks follow-up questions; there's back and forth between the user and the assistant.</li>
+<li><code>single turn</code>: one user message, one final answer.</li>
+<li><code>multiple turns</code>: follow-up questions and back-and-forth (<a href="turn/">Turn</a>).</li>
 </ul>
 <h3 id="2-function-call">2. Function Call<a class="headerlink" href="#2-function-call" title="Permanent link">&para;</a></h3>
 <ul>
-<li><code>single call</code>: The user asks a question that requires only one function call.</li>
-<li><code>multiple parallel calls</code>: The user asks a question that requires several independent function calls at once.</li>
-<li><code>multiple consecutive calls</code>: The user asks a question that requires function calls in sequence, where a later call depends on an earlier output.</li>
-<li><code>no call</code>: The user asks a question that doesn't require a function call, or that no available function supports.</li>
+<li><code>single call</code>: exactly one function call.</li>
+<li><code>multiple parallel calls</code>: several independent calls at once.</li>
+<li><code>multiple consecutive calls</code>: calls in sequence; a later one depends on an earlier result.</li>
+<li><code>no call</code>: nothing to call, or no tool supports the request.</li>
 <li>Advanced: conditional calls, loops/pagination, retry, fallback, and cross-turn reuse (<a href="function-call/">Function Call</a>).</li>
 </ul>
-<h3 id="3-adversarial-user-cases">3. Adversarial User Cases<a class="headerlink" href="#3-adversarial-user-cases" title="Permanent link">&para;</a></h3>
+<h3 id="3-adversarial-user-cases-details">3. Adversarial User Cases (<a href="adversarial-user-cases/">details</a>)<a class="headerlink" href="#3-adversarial-user-cases-details" title="Permanent link">&para;</a></h3>
 <ul>
 <li><em>Missing information</em></li>
 <li><em>Happy path</em> vs <em>Unhappy path</em></li>
@@ -1884,15 +1884,15 @@
 <ul>
 <li><em>Success</em>, <em>Empty</em>, <em>Partial failure</em>, <em>Error with hint</em>, <em>Timeout / rate limit</em>, <em>Huge output</em> (<a href="best-practices-for-tool-output/">Tool Output</a>)</li>
 </ul>
-<h3 id="5-major-domains">5. Major Domains:<a class="headerlink" href="#5-major-domains" title="Permanent link">&para;</a></h3>
+<h3 id="5-major-domains">5. Major Domains<a class="headerlink" href="#5-major-domains" title="Permanent link">&para;</a></h3>
 <ul>
-<li><strong>Data Extraction</strong>: Noisy natural language to JSON, where the data is hidden in a large amount of unstructured text.</li>
+<li><strong>Data Extraction</strong>: noisy natural language to JSON, where the data is buried in unstructured text.</li>
 <li><strong>Web Scraping</strong>: HTML/XML to JSON</li>
 <li><strong>Business and Sales</strong></li>
 <li><strong>Finance</strong></li>
 <li><strong>Education</strong></li>
-<li><strong>Healthcare</strong>: Diagnose diseases and generate treatment plans.</li>
-<li><strong>Text Analysis</strong>: Sentiment analysis, entity extraction, and text classification</li>
+<li><strong>Healthcare</strong>: scheduling, records lookup, triage support.</li>
+<li><strong>Text Analysis</strong>: sentiment analysis, entity extraction, text classification</li>
 <li><strong>Developer tools</strong>: code search, CI, ticketing, databases</li>
 <li><strong>Personal assistant</strong>: calendar, email, travel, smart home</li>
 </ul>
@@ -1961,6 +1961,10 @@
     <div class="md-footer-meta__inner md-grid">
       <div class="md-copyright">
   
+    <div class="md-copyright__highlight">
+      Built by <a href="https://www.reego.ai">reego.ai</a> · Try function calling at <a href="https://toolcalling.ai/">toolcalling.ai</a>
+    </div>
+  
   
     Made with
     <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
@@ -2007,6 +2011,8 @@
     
     
       <script src="assets/javascripts/bundle.c21346df.min.js"></script>
+      
+        <script src="javascripts/external-links.js"></script>
       
     
   </body>

@@ -9,7 +9,7 @@
         <meta name="description" content="The function calling / tool calling reference. How it works, how to use it with every provider, how to build training data, fine-tune and evaluate models.">
       
       
-        <meta name="author" content="Reego Software">
+        <meta name="author" content="reego.ai">
       
       
         <link rel="canonical" href="https://toolaugmented.ai/best-practices-for-training-data/">
@@ -991,10 +991,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#1-planning" class="md-nav__link">
+  <a href="#1-plan-before-acting" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1. Planning
+        1. Plan before acting
       
     </span>
   </a>
@@ -1002,10 +1002,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#2-sample-record" class="md-nav__link">
+  <a href="#2-write-realistic-tool-outputs" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2. Sample record
+        2. Write realistic tool outputs
       
     </span>
   </a>
@@ -1013,10 +1013,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#3-dataset-mix" class="md-nav__link">
+  <a href="#3-write-grounded-assistant-turns" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3. Dataset mix
+        3. Write grounded assistant turns
       
     </span>
   </a>
@@ -1024,10 +1024,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#4-quality-gates" class="md-nav__link">
+  <a href="#4-keep-the-format-exact" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4. Quality gates
+        4. Keep the format exact
       
     </span>
   </a>
@@ -1035,10 +1035,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#5-anti-patterns" class="md-nav__link">
+  <a href="#5-sample-multi-turn-with-clarification-and-consecutive-calls" class="md-nav__link">
     <span class="md-ellipsis">
       
-        5. Anti-patterns
+        5. Sample: multi-turn with clarification and consecutive calls
       
     </span>
   </a>
@@ -1628,10 +1628,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#1-planning" class="md-nav__link">
+  <a href="#1-plan-before-acting" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1. Planning
+        1. Plan before acting
       
     </span>
   </a>
@@ -1639,10 +1639,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#2-sample-record" class="md-nav__link">
+  <a href="#2-write-realistic-tool-outputs" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2. Sample record
+        2. Write realistic tool outputs
       
     </span>
   </a>
@@ -1650,10 +1650,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#3-dataset-mix" class="md-nav__link">
+  <a href="#3-write-grounded-assistant-turns" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3. Dataset mix
+        3. Write grounded assistant turns
       
     </span>
   </a>
@@ -1661,10 +1661,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#4-quality-gates" class="md-nav__link">
+  <a href="#4-keep-the-format-exact" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4. Quality gates
+        4. Keep the format exact
       
     </span>
   </a>
@@ -1672,10 +1672,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#5-anti-patterns" class="md-nav__link">
+  <a href="#5-sample-multi-turn-with-clarification-and-consecutive-calls" class="md-nav__link">
     <span class="md-ellipsis">
       
-        5. Anti-patterns
+        5. Sample: multi-turn with clarification and consecutive calls
       
     </span>
   </a>
@@ -1700,103 +1700,73 @@
 
 
 <h1 id="best-practices-for-training-data">Best Practices for Training Data<a class="headerlink" href="#best-practices-for-training-data" title="Permanent link">&para;</a></h1>
-<h2 id="1-planning">1. Planning<a class="headerlink" href="#1-planning" title="Permanent link">&para;</a></h2>
+<p>How to write each training sample. For <strong>what</strong> to cover (coverage matrix, edge cases, dataset mix, quality gates), see <a href="../recipe/">The Recipe</a>. For training itself, see the <a href="../fine-tuning/">Fine-Tuning Guide</a>.</p>
+<h2 id="1-plan-before-acting">1. Plan before acting<a class="headerlink" href="#1-plan-before-acting" title="Permanent link">&para;</a></h2>
 <ul>
-<li>Planning, aka the preceding text, is crucial for the model to keep track of its next action.</li>
-<li>Provide clear intermediate explanations or logical connections between sequential tool uses, so the process flow is never confusing.</li>
+<li>Before multi-step calls, the assistant writes a <strong>short plan</strong> (the "preceding text"). It keeps the model from losing track of the next action.</li>
+<li>Between sequential calls, add brief logical connections: <em>"Dr. Lee is free on Tuesday at 10:00. I'll book that."</em></li>
+<li>Keep plans short and factual. They are part of the training target.</li>
 </ul>
-<h2 id="2-sample-record">2. Sample record<a class="headerlink" href="#2-sample-record" title="Permanent link">&para;</a></h2>
-<p>The record below shows a parallel call, a partial failure, and a grounded final answer.</p>
+<h2 id="2-write-realistic-tool-outputs">2. Write realistic tool outputs<a class="headerlink" href="#2-write-realistic-tool-outputs" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Structured, not prose</strong> (<a href="../best-practices-for-tool-output/">Tool Output</a>).</li>
+<li><strong>Consistent across turns</strong>: the same ids, prices, and states everywhere in the conversation.</li>
+<li><strong>Errors carry hints</strong>, so the next assistant turn can show the recovery.</li>
+<li>Vary them: empty, partial, large, slow, and failing results all occur in production.</li>
+</ul>
+<h2 id="3-write-grounded-assistant-turns">3. Write grounded assistant turns<a class="headerlink" href="#3-write-grounded-assistant-turns" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Every argument value comes from the <strong>user</strong>, the <strong>system prompt</strong>, or an <strong>earlier tool result</strong>. Never from nowhere.</li>
+<li>Final answers <strong>interpret</strong> the results (compare, summarize, format) instead of repeating JSON.</li>
+<li>Follow the system prompt's tone and policies in every turn, including the failure turns.</li>
+</ul>
+<h2 id="4-keep-the-format-exact">4. Keep the format exact<a class="headerlink" href="#4-keep-the-format-exact" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Every tool call has a unique id, and exactly one result with the same id follows it.</li>
+<li>The arguments validate against the schema.</li>
+<li>Use the same message format your training framework and chat template expect (<a href="../fine-tuning/#3-data-format">Fine-Tuning § Data format</a>).</li>
+</ul>
+<h2 id="5-sample-multi-turn-with-clarification-and-consecutive-calls">5. Sample: multi-turn with clarification and consecutive calls<a class="headerlink" href="#5-sample-multi-turn-with-clarification-and-consecutive-calls" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="p">{</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="nt">"messages"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="p">{</span><span class="nt">"role"</span><span class="p">:</span><span class="w"> </span><span class="s2">"system"</span><span class="p">,</span><span class="w"> </span><span class="nt">"content"</span><span class="p">:</span><span class="w"> </span><span class="s2">"You are a travel assistant. Today is 2026-11-01. Default currency: EUR. Confirm before booking."</span><span class="p">},</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="p">{</span><span class="nt">"role"</span><span class="p">:</span><span class="w"> </span><span class="s2">"user"</span><span class="p">,</span><span class="w"> </span><span class="nt">"content"</span><span class="p">:</span><span class="w"> </span><span class="s2">"weather in tokyo &amp; paris tmrw?"</span><span class="p">},</span>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">    </span><span class="p">{</span><span class="nt">"role"</span><span class="p">:</span><span class="w"> </span><span class="s2">"assistant"</span><span class="p">,</span><span class="w"> </span><span class="nt">"content"</span><span class="p">:</span><span class="w"> </span><span class="s2">"I'll check both cities."</span><span class="p">,</span><span class="w"> </span><span class="nt">"tool_calls"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">      </span><span class="p">{</span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"c1"</span><span class="p">,</span><span class="w"> </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"get_weather"</span><span class="p">,</span><span class="w"> </span><span class="nt">"arguments"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">"city"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Tokyo"</span><span class="p">,</span><span class="w"> </span><span class="nt">"date"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2026-11-02"</span><span class="p">}},</span>
-<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">      </span><span class="p">{</span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"c2"</span><span class="p">,</span><span class="w"> </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"get_weather"</span><span class="p">,</span><span class="w"> </span><span class="nt">"arguments"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">"city"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Paris"</span><span class="p">,</span><span class="w"> </span><span class="nt">"date"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2026-11-02"</span><span class="p">}}</span>
-<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">    </span><span class="p">]},</span>
-<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">    </span><span class="p">{</span><span class="nt">"role"</span><span class="p">:</span><span class="w"> </span><span class="s2">"tool"</span><span class="p">,</span><span class="w"> </span><span class="nt">"tool_call_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"c1"</span><span class="p">,</span><span class="w"> </span><span class="nt">"content"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"OK"</span><span class="p">,</span><span class="w"> </span><span class="nt">"temp_c"</span><span class="p">:</span><span class="w"> </span><span class="mi">14</span><span class="p">,</span><span class="w"> </span><span class="nt">"condition"</span><span class="p">:</span><span class="w"> </span><span class="s2">"rain"</span><span class="p">}},</span>
-<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">    </span><span class="p">{</span><span class="nt">"role"</span><span class="p">:</span><span class="w"> </span><span class="s2">"tool"</span><span class="p">,</span><span class="w"> </span><span class="nt">"tool_call_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"c2"</span><span class="p">,</span><span class="w"> </span><span class="nt">"content"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ERROR"</span><span class="p">,</span><span class="w"> </span><span class="nt">"error"</span><span class="p">:</span><span class="w"> </span><span class="s2">"date_out_of_range"</span><span class="p">,</span><span class="w"> </span><span class="nt">"hint"</span><span class="p">:</span><span class="w"> </span><span class="s2">"max 1 day ahead in local time"</span><span class="p">}},</span>
-<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">    </span><span class="p">{</span><span class="nt">"role"</span><span class="p">:</span><span class="w"> </span><span class="s2">"assistant"</span><span class="p">,</span><span class="w"> </span><span class="nt">"content"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Tokyo tomorrow: 14°C with rain. I couldn't get Paris yet; its forecast isn't available for that date. Want me to try again later?"</span><span class="p">}</span>
-<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">  </span><span class="p">],</span>
-<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="w">  </span><span class="nt">"tools"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="w">    </span><span class="p">{</span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"get_weather"</span><span class="p">,</span><span class="w"> </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Daily forecast for a city."</span><span class="p">,</span><span class="w"> </span><span class="nt">"parameters"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="w">      </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"object"</span><span class="p">,</span>
-<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="w">      </span><span class="nt">"properties"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="w">        </span><span class="nt">"city"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="p">,</span><span class="w"> </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"City name, English."</span><span class="p">},</span>
-<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="w">        </span><span class="nt">"date"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="p">,</span><span class="w"> </span><span class="nt">"format"</span><span class="p">:</span><span class="w"> </span><span class="s2">"date"</span><span class="p">,</span><span class="w"> </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ISO date, local to the city."</span><span class="p">}</span>
-<a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="w">      </span><span class="p">},</span>
-<a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a><span class="w">      </span><span class="nt">"required"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"city"</span><span class="p">,</span><span class="w"> </span><span class="s2">"date"</span><span class="p">]</span>
-<a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a><span class="w">    </span><span class="p">}}</span>
-<a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a><span class="w">  </span><span class="p">]</span>
-<a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a><span class="p">}</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="nt">"tools"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="p">{</span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"find_slots"</span><span class="p">,</span><span class="w"> </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Find free appointment slots for a doctor on a date."</span><span class="p">,</span><span class="w"> </span><span class="nt">"parameters"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"object"</span><span class="p">,</span><span class="w"> </span><span class="nt">"properties"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">"doctor_id"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="p">},</span><span class="w"> </span><span class="nt">"date"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="p">,</span><span class="w"> </span><span class="nt">"format"</span><span class="p">:</span><span class="w"> </span><span class="s2">"date"</span><span class="p">}},</span><span class="w"> </span><span class="nt">"required"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"doctor_id"</span><span class="p">,</span><span class="w"> </span><span class="s2">"date"</span><span class="p">]}},</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="p">{</span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"book_slot"</span><span class="p">,</span><span class="w"> </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Book a slot. Irreversible: confirm with the user first."</span><span class="p">,</span><span class="w"> </span><span class="nt">"parameters"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"object"</span><span class="p">,</span><span class="w"> </span><span class="nt">"properties"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">"slot_id"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="p">}},</span><span class="w"> </span><span class="nt">"required"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"slot_id"</span><span class="p">]}},</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">    </span><span class="p">{</span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"list_doctors"</span><span class="p">,</span><span class="w"> </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"List doctors in a department."</span><span class="p">,</span><span class="w"> </span><span class="nt">"parameters"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"object"</span><span class="p">,</span><span class="w"> </span><span class="nt">"properties"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">"department"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="p">,</span><span class="w"> </span><span class="nt">"enum"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"cardiology"</span><span class="p">,</span><span class="w"> </span><span class="s2">"dermatology"</span><span class="p">,</span><span class="w"> </span><span class="s2">"pediatrics"</span><span class="p">]}},</span><span class="w"> </span><span class="nt">"required"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"department"</span><span class="p">]}}</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">  </span><span class="p">],</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">  </span><span class="nt">"messages"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">    </span><span class="p">{</span><span class="nt">"role"</span><span class="p">:</span><span class="w"> </span><span class="s2">"system"</span><span class="p">,</span><span class="w"> </span><span class="nt">"content"</span><span class="p">:</span><span class="w"> </span><span class="s2">"You are a clinic booking assistant. Today is 2026-11-02 (Monday). Confirm before booking."</span><span class="p">},</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">    </span><span class="p">{</span><span class="nt">"role"</span><span class="p">:</span><span class="w"> </span><span class="s2">"user"</span><span class="p">,</span><span class="w"> </span><span class="nt">"content"</span><span class="p">:</span><span class="w"> </span><span class="s2">"I need an appointment on Tuesday or Wednesday."</span><span class="p">},</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">    </span><span class="p">{</span><span class="nt">"role"</span><span class="p">:</span><span class="w"> </span><span class="s2">"assistant"</span><span class="p">,</span><span class="w"> </span><span class="nt">"content"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Sure. Which department is it for: cardiology, dermatology or pediatrics?"</span><span class="p">},</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">    </span><span class="p">{</span><span class="nt">"role"</span><span class="p">:</span><span class="w"> </span><span class="s2">"user"</span><span class="p">,</span><span class="w"> </span><span class="nt">"content"</span><span class="p">:</span><span class="w"> </span><span class="s2">"dermatology"</span><span class="p">},</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">    </span><span class="p">{</span><span class="nt">"role"</span><span class="p">:</span><span class="w"> </span><span class="s2">"assistant"</span><span class="p">,</span><span class="w"> </span><span class="nt">"content"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Let me find the dermatologists first."</span><span class="p">,</span><span class="w"> </span><span class="nt">"tool_calls"</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"c1"</span><span class="p">,</span><span class="w"> </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"list_doctors"</span><span class="p">,</span><span class="w"> </span><span class="nt">"arguments"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">"department"</span><span class="p">:</span><span class="w"> </span><span class="s2">"dermatology"</span><span class="p">}}]},</span>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="w">    </span><span class="p">{</span><span class="nt">"role"</span><span class="p">:</span><span class="w"> </span><span class="s2">"tool"</span><span class="p">,</span><span class="w"> </span><span class="nt">"tool_call_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"c1"</span><span class="p">,</span><span class="w"> </span><span class="nt">"content"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">"doctors"</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"d7"</span><span class="p">,</span><span class="w"> </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Dr. Lee"</span><span class="p">}]}},</span>
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="w">    </span><span class="p">{</span><span class="nt">"role"</span><span class="p">:</span><span class="w"> </span><span class="s2">"assistant"</span><span class="p">,</span><span class="w"> </span><span class="nt">"content"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Dr. Lee is available in dermatology. Checking Tuesday and Wednesday."</span><span class="p">,</span><span class="w"> </span><span class="nt">"tool_calls"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="w">      </span><span class="p">{</span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"c2"</span><span class="p">,</span><span class="w"> </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"find_slots"</span><span class="p">,</span><span class="w"> </span><span class="nt">"arguments"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">"doctor_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"d7"</span><span class="p">,</span><span class="w"> </span><span class="nt">"date"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2026-11-03"</span><span class="p">}},</span>
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="w">      </span><span class="p">{</span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"c3"</span><span class="p">,</span><span class="w"> </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"find_slots"</span><span class="p">,</span><span class="w"> </span><span class="nt">"arguments"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">"doctor_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"d7"</span><span class="p">,</span><span class="w"> </span><span class="nt">"date"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2026-11-04"</span><span class="p">}}</span>
+<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="w">    </span><span class="p">]},</span>
+<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="w">    </span><span class="p">{</span><span class="nt">"role"</span><span class="p">:</span><span class="w"> </span><span class="s2">"tool"</span><span class="p">,</span><span class="w"> </span><span class="nt">"tool_call_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"c2"</span><span class="p">,</span><span class="w"> </span><span class="nt">"content"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">"slots"</span><span class="p">:</span><span class="w"> </span><span class="p">[]}},</span>
+<a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="w">    </span><span class="p">{</span><span class="nt">"role"</span><span class="p">:</span><span class="w"> </span><span class="s2">"tool"</span><span class="p">,</span><span class="w"> </span><span class="nt">"tool_call_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"c3"</span><span class="p">,</span><span class="w"> </span><span class="nt">"content"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">"slots"</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="nt">"slot_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"s42"</span><span class="p">,</span><span class="w"> </span><span class="nt">"time"</span><span class="p">:</span><span class="w"> </span><span class="s2">"10:00"</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="nt">"slot_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"s43"</span><span class="p">,</span><span class="w"> </span><span class="nt">"time"</span><span class="p">:</span><span class="w"> </span><span class="s2">"15:30"</span><span class="p">}]}},</span>
+<a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a><span class="w">    </span><span class="p">{</span><span class="nt">"role"</span><span class="p">:</span><span class="w"> </span><span class="s2">"assistant"</span><span class="p">,</span><span class="w"> </span><span class="nt">"content"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Dr. Lee has no openings on Tuesday. On Wednesday, Nov 4, there are 10:00 and 15:30. Which one should I book?"</span><span class="p">},</span>
+<a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a><span class="w">    </span><span class="p">{</span><span class="nt">"role"</span><span class="p">:</span><span class="w"> </span><span class="s2">"user"</span><span class="p">,</span><span class="w"> </span><span class="nt">"content"</span><span class="p">:</span><span class="w"> </span><span class="s2">"10 please"</span><span class="p">},</span>
+<a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a><span class="w">    </span><span class="p">{</span><span class="nt">"role"</span><span class="p">:</span><span class="w"> </span><span class="s2">"assistant"</span><span class="p">,</span><span class="w"> </span><span class="nt">"content"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Booking Wednesday 10:00 with Dr. Lee."</span><span class="p">,</span><span class="w"> </span><span class="nt">"tool_calls"</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"c4"</span><span class="p">,</span><span class="w"> </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"book_slot"</span><span class="p">,</span><span class="w"> </span><span class="nt">"arguments"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">"slot_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"s42"</span><span class="p">}}]},</span>
+<a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a><span class="w">    </span><span class="p">{</span><span class="nt">"role"</span><span class="p">:</span><span class="w"> </span><span class="s2">"tool"</span><span class="p">,</span><span class="w"> </span><span class="nt">"tool_call_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"c4"</span><span class="p">,</span><span class="w"> </span><span class="nt">"content"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"OK"</span><span class="p">,</span><span class="w"> </span><span class="nt">"booking_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"B-9013"</span><span class="p">}},</span>
+<a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a><span class="w">    </span><span class="p">{</span><span class="nt">"role"</span><span class="p">:</span><span class="w"> </span><span class="s2">"assistant"</span><span class="p">,</span><span class="w"> </span><span class="nt">"content"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Done. You're booked with Dr. Lee on Wednesday, Nov 4 at 10:00 (booking B-9013)."</span><span class="p">}</span>
+<a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a><span class="w">  </span><span class="p">]</span>
+<a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a><span class="p">}</span>
 </code></pre></div>
-<h2 id="3-dataset-mix">3. Dataset mix<a class="headerlink" href="#3-dataset-mix" title="Permanent link">&para;</a></h2>
-<p>A starting point. Tune it on your <a href="../evaluation/">evaluation</a> results.</p>
-<table>
-<thead>
-<tr>
-<th>Slice</th>
-<th>Share</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Single call</td>
-<td>20%</td>
-</tr>
-<tr>
-<td>Parallel</td>
-<td>15%</td>
-</tr>
-<tr>
-<td>Consecutive / mixed</td>
-<td>20%</td>
-</tr>
-<tr>
-<td>No call (chit-chat + no tool exists)</td>
-<td>15%</td>
-</tr>
-<tr>
-<td>Clarification (missing or ambiguous args)</td>
-<td>10%</td>
-</tr>
-<tr>
-<td>Tool error / empty result / recovery</td>
-<td>10%</td>
-</tr>
-<tr>
-<td>Adversarial (injection, out-of-role, toxic, noisy)</td>
-<td>10%</td>
-</tr>
-</tbody>
-</table>
+<p>What this sample teaches:</p>
 <ul>
-<li>About 50% multi-turn.</li>
-<li>At least 30% of samples include distractor tools.</li>
-<li>Balance domains and languages.</li>
-<li>Deduplicate near-identical samples.</li>
-<li>Hold out unseen tools and domains for evaluation.</li>
+<li>Asking for a missing parameter, one value at a time.</li>
+<li>A consecutive call: the doctor's id from <code>list_doctors</code> feeds <code>find_slots</code>.</li>
+<li>Parallel calls for the two days.</li>
+<li>Handling an empty result.</li>
+<li>Taking the user's choice as the confirmation.</li>
+<li>A grounded final answer.</li>
 </ul>
-<h2 id="4-quality-gates">4. Quality gates<a class="headerlink" href="#4-quality-gates" title="Permanent link">&para;</a></h2>
-<p>Every sample must pass all of these:</p>
-<ul>
-<li>Arguments validate against the JSON schema (types, <code>required</code>, <code>enum</code>, ranges).</li>
-<li>Every <code>tool_call</code> has exactly one matching tool result (<code>id</code>), in order.</li>
-<li>Every argument value is traceable to the user, the system prompt, or an earlier tool output.</li>
-<li>No call to a tool that isn't in <code>tools</code>, and no call outside the user's role.</li>
-<li>The final answer is grounded in the tool results, follows the system tone, and isn't a raw dump.</li>
-<li>No PII leaks and no system-prompt leaks.</li>
-</ul>
-<h2 id="5-anti-patterns">5. Anti-patterns<a class="headerlink" href="#5-anti-patterns" title="Permanent link">&para;</a></h2>
-<ul>
-<li>Every sample is a happy path with a single call.</li>
-<li>Tool outputs written as prose sentences.</li>
-<li>Defaults the model guesses but no prompt or schema defines.</li>
-<li>Asking for all params at once, like a form.</li>
-<li>Same tool names in every sample, so the model overfits on names.</li>
-<li>Errors with no hint for recovery.</li>
-</ul>
+<div class="admonition note">
+<p class="admonition-title">Tool content format</p>
+<p>Tool results are shown as objects for readability. Most chat templates expect them as <strong>strings</strong>: serialize them with <code>json.dumps</code> when you build the dataset.</p>
+</div>
 
 
 
@@ -1875,6 +1845,10 @@
     <div class="md-footer-meta__inner md-grid">
       <div class="md-copyright">
   
+    <div class="md-copyright__highlight">
+      Built by <a href="https://www.reego.ai">reego.ai</a> · Try function calling at <a href="https://toolcalling.ai/">toolcalling.ai</a>
+    </div>
+  
   
     Made with
     <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
@@ -1921,6 +1895,8 @@
     
     
       <script src="../assets/javascripts/bundle.c21346df.min.js"></script>
+      
+        <script src="../javascripts/external-links.js"></script>
       
     
   </body>

@@ -9,7 +9,7 @@
         <meta name="description" content="The function calling / tool calling reference. How it works, how to use it with every provider, how to build training data, fine-tune and evaluate models.">
       
       
-        <meta name="author" content="Reego Software">
+        <meta name="author" content="reego.ai">
       
       
         <link rel="canonical" href="https://toolaugmented.ai/recipe/">
@@ -1910,7 +1910,7 @@
 
 
 <h1 id="the-recipe">The Recipe<a class="headerlink" href="#the-recipe" title="Permanent link">&para;</a></h1>
-<p>One-page, end-to-end recipe for building a Function/Tool Calling dataset: every case to cover, from basics to edge and advanced cases.</p>
+<p>The one-page, end-to-end recipe for building a function/tool calling dataset: every case to cover, from the basics to edge and advanced cases. The deeper guides are linked from each section.</p>
 <hr />
 <h2 id="1-pipeline">1. Pipeline<a class="headerlink" href="#1-pipeline" title="Permanent link">&para;</a></h2>
 <ol>
@@ -1921,7 +1921,7 @@
 <li><strong>Variants</strong>: create 4-5 variants per seed (<a href="../variants/">Variants</a>).</li>
 <li><strong>Validate</strong>: run the quality gates (§8). Reject anything that fails.</li>
 <li><strong>Mix and split</strong>: balance the dataset (§7). Hold out <strong>unseen tools and domains</strong> for eval.</li>
-<li><strong>Train, then evaluate</strong> (§9). Turn failures into new seeds, and repeat.</li>
+<li><strong>Train, then evaluate</strong> (§9, <a href="../fine-tuning/">Fine-Tuning Guide</a>). Turn failures into new seeds, and repeat.</li>
 </ol>
 <hr />
 <h2 id="2-coverage-matrix">2. Coverage Matrix<a class="headerlink" href="#2-coverage-matrix" title="Permanent link">&para;</a></h2>
@@ -2104,7 +2104,7 @@
 </ul>
 <hr />
 <h2 id="6-sample-record">6. Sample Record<a class="headerlink" href="#6-sample-record" title="Permanent link">&para;</a></h2>
-<p>The record below shows a parallel call, a partial failure, and a grounded final answer.</p>
+<p>The record below shows a parallel call, a partial failure, and a grounded final answer. A longer multi-turn sample is on <a href="../best-practices-for-training-data/#5-sample-multi-turn-with-clarification-and-consecutive-calls">Training Data</a>.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="p">{</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="nt">"messages"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="p">{</span><span class="nt">"role"</span><span class="p">:</span><span class="w"> </span><span class="s2">"system"</span><span class="p">,</span><span class="w"> </span><span class="nt">"content"</span><span class="p">:</span><span class="w"> </span><span class="s2">"You are a travel assistant. Today is 2026-11-01. Default currency: EUR. Confirm before booking."</span><span class="p">},</span>
@@ -2238,7 +2238,7 @@
 </tbody>
 </table>
 <ul>
-<li>Report each metric <strong>per slice</strong> (§7), on <strong>seen vs unseen tools</strong>, and on <strong>single vs multi-turn</strong> conversations.</li>
+<li>Report each metric <strong>per slice</strong> (§7), on <strong>seen vs unseen tools</strong>, and on <strong>single vs multi-turn</strong> conversations. Details: <a href="../evaluation/">Evaluation</a>.</li>
 </ul>
 <hr />
 <h2 id="10-anti-patterns">10. Anti-patterns<a class="headerlink" href="#10-anti-patterns" title="Permanent link">&para;</a></h2>
@@ -2334,6 +2334,10 @@
     <div class="md-footer-meta__inner md-grid">
       <div class="md-copyright">
   
+    <div class="md-copyright__highlight">
+      Built by <a href="https://www.reego.ai">reego.ai</a> · Try function calling at <a href="https://toolcalling.ai/">toolcalling.ai</a>
+    </div>
+  
   
     Made with
     <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
@@ -2380,6 +2384,8 @@
     
     
       <script src="../assets/javascripts/bundle.c21346df.min.js"></script>
+      
+        <script src="../javascripts/external-links.js"></script>
       
     
   </body>

@@ -9,7 +9,7 @@
         <meta name="description" content="The function calling / tool calling reference. How it works, how to use it with every provider, how to build training data, fine-tune and evaluate models.">
       
       
-        <meta name="author" content="Reego Software">
+        <meta name="author" content="reego.ai">
       
       
         <link rel="canonical" href="https://toolaugmented.ai/best-practices/">
@@ -90,7 +90,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#best-practices" class="md-skip">
+        <a href="#general-best-practices" class="md-skip">
           Skip to content
         </a>
       
@@ -1092,10 +1092,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#1-enums" class="md-nav__link">
+  <a href="#1-start-from-a-clear-scenario-and-role" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1. Enums
+        1. Start from a clear scenario and role
       
     </span>
   </a>
@@ -1103,10 +1103,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#2-function-descriptions" class="md-nav__link">
+  <a href="#2-design-tools-around-tasks" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2. Function descriptions
+        2. Design tools around tasks
       
     </span>
   </a>
@@ -1114,10 +1114,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#3-parameters" class="md-nav__link">
+  <a href="#3-write-descriptions-for-the-model" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3. Parameters
+        3. Write descriptions for the model
       
     </span>
   </a>
@@ -1125,10 +1125,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#4-pick-a-clear-scenario" class="md-nav__link">
+  <a href="#4-make-parameters-unambiguous" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4. Pick a clear scenario
+        4. Make parameters unambiguous
       
     </span>
   </a>
@@ -1136,10 +1136,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#5-consistent-naming-standards" class="md-nav__link">
+  <a href="#5-name-consistently" class="md-nav__link">
     <span class="md-ellipsis">
       
-        5. Consistent naming standards
+        5. Name consistently
       
     </span>
   </a>
@@ -1147,10 +1147,32 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#6-safety" class="md-nav__link">
+  <a href="#6-return-structured-results-and-helpful-errors" class="md-nav__link">
     <span class="md-ellipsis">
       
-        6. Safety
+        6. Return structured results and helpful errors
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-build-in-safety" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Build in safety
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-test-with-real-conversations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Test with real conversations
       
     </span>
   </a>
@@ -1639,10 +1661,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#1-enums" class="md-nav__link">
+  <a href="#1-start-from-a-clear-scenario-and-role" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1. Enums
+        1. Start from a clear scenario and role
       
     </span>
   </a>
@@ -1650,10 +1672,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#2-function-descriptions" class="md-nav__link">
+  <a href="#2-design-tools-around-tasks" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2. Function descriptions
+        2. Design tools around tasks
       
     </span>
   </a>
@@ -1661,10 +1683,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#3-parameters" class="md-nav__link">
+  <a href="#3-write-descriptions-for-the-model" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3. Parameters
+        3. Write descriptions for the model
       
     </span>
   </a>
@@ -1672,10 +1694,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#4-pick-a-clear-scenario" class="md-nav__link">
+  <a href="#4-make-parameters-unambiguous" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4. Pick a clear scenario
+        4. Make parameters unambiguous
       
     </span>
   </a>
@@ -1683,10 +1705,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#5-consistent-naming-standards" class="md-nav__link">
+  <a href="#5-name-consistently" class="md-nav__link">
     <span class="md-ellipsis">
       
-        5. Consistent naming standards
+        5. Name consistently
       
     </span>
   </a>
@@ -1694,10 +1716,32 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#6-safety" class="md-nav__link">
+  <a href="#6-return-structured-results-and-helpful-errors" class="md-nav__link">
     <span class="md-ellipsis">
       
-        6. Safety
+        6. Return structured results and helpful errors
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-build-in-safety" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Build in safety
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-test-with-real-conversations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Test with real conversations
       
     </span>
   </a>
@@ -1721,46 +1765,47 @@
 
 
 
-<h1 id="best-practices">Best Practices<a class="headerlink" href="#best-practices" title="Permanent link">&para;</a></h1>
-<h2 id="1-enums">1. Enums<a class="headerlink" href="#1-enums" title="Permanent link">&para;</a></h2>
+<h1 id="general-best-practices">General Best Practices<a class="headerlink" href="#general-best-practices" title="Permanent link">&para;</a></h1>
+<p>The rules that matter most, whether you call a hosted API or train your own model. The details are on <a href="../best-practices-for-schema/">Schema</a>, <a href="../best-practices-for-system-instruction/">System Instruction</a>, and <a href="../best-practices-for-tool-output/">Tool Output</a>.</p>
+<h2 id="1-start-from-a-clear-scenario-and-role">1. Start from a clear scenario and role<a class="headerlink" href="#1-start-from-a-clear-scenario-and-role" title="Permanent link">&para;</a></h2>
+<p>Decide <strong>who</strong> the user is: a guest, a staff member, a manager, an admin. Expose only the tools that role may use. A hotel guest's assistant must not have <code>cancel_any_booking</code>, even if the backend would block it. A tool the model can see is a tool it can be talked into calling.</p>
+<h2 id="2-design-tools-around-tasks">2. Design tools around tasks<a class="headerlink" href="#2-design-tools-around-tasks" title="Permanent link">&para;</a></h2>
 <ul>
-<li>Use either <code>enum</code>s or the options mentioned in descriptions as much as possible.</li>
+<li><strong>One clear responsibility per tool.</strong> Not so granular that every task needs five calls, not so broad that one tool takes a <code>mode</code> switch with ten behaviors.</li>
+<li><strong>Inputs and outputs must not duplicate each other.</strong> Every tool should add information or perform an action.</li>
+<li><strong>Keep the set small.</strong> Around 20-30 tools in context at most; beyond that, use <a href="../function-pivoting-aka-tool-search/">tool search</a>.</li>
+<li><strong>Group similar operations</strong> (<code>search_orders</code> with filters) instead of many near-copies (<code>search_orders_by_date</code>, <code>search_orders_by_status</code>, ...).</li>
 </ul>
-<h2 id="2-function-descriptions">2. Function descriptions<a class="headerlink" href="#2-function-descriptions" title="Permanent link">&para;</a></h2>
+<h2 id="3-write-descriptions-for-the-model">3. Write descriptions for the model<a class="headerlink" href="#3-write-descriptions-for-the-model" title="Permanent link">&para;</a></h2>
+<p>The model chooses tools by reading their descriptions, so each one should state:</p>
 <ul>
-<li>Always include the function description within the function definition, for consistency.</li>
+<li><strong>What</strong> the tool does and <strong>what it returns</strong>.</li>
+<li><strong>When to use it</strong>, and <strong>when not to</strong> (especially next to a similar tool).</li>
+<li><strong>Constraints</strong>: limits, units, formats, side effects (<em>"Charges the card. Ask for confirmation first."</em>).</li>
 </ul>
-<h2 id="3-parameters">3. Parameters<a class="headerlink" href="#3-parameters" title="Permanent link">&para;</a></h2>
+<h2 id="4-make-parameters-unambiguous">4. Make parameters unambiguous<a class="headerlink" href="#4-make-parameters-unambiguous" title="Permanent link">&para;</a></h2>
 <ul>
-<li>
-<p><strong>Clear parameter definitions</strong>:</p>
+<li>Use <strong><code>enum</code>s</strong> wherever the values are a fixed set.</li>
+<li><strong>State units and formats</strong>: does <code>max_length</code> mean characters, words, or sentences? Is <code>date</code> ISO 8601? Which timezone?</li>
+<li><strong>Never leave defaults implicit.</strong> If something has a default, put it in the schema (<code>default</code>), the description, or the system prompt, and keep it <strong>identical</strong> everywhere. If the news tool returns 5 items by default, every prompt and doc must say 5.</li>
+<li>Mark only the truly required fields as <strong><code>required</code></strong>.</li>
+</ul>
+<h2 id="5-name-consistently">5. Name consistently<a class="headerlink" href="#5-name-consistently" title="Permanent link">&para;</a></h2>
 <ul>
-<li>Specify whether parameters like <code>max_length</code> refer to the number of characters, words, or sentences. This prevents ambiguity and makes clear how to use the function.</li>
+<li>Use a <strong>verb + noun</strong> (<code>get_reservations</code>, <code>create_user</code>, <code>cancel_order</code>) unless you have a reason not to.</li>
+<li>Pick <strong>one case</strong> (snake_case, camelCase, ...) and use it for every tool and parameter.</li>
+<li>No whitespace or special characters in names: <code>build_strength</code>, not <code>build strength</code>. Check your provider's name limits (<a href="../providers/#key-differences-that-bite">Providers</a>).</li>
 </ul>
-</li>
-<li>
-<p><strong>Consistent default parameters</strong>:</p>
+<h2 id="6-return-structured-results-and-helpful-errors">6. Return structured results and helpful errors<a class="headerlink" href="#6-return-structured-results-and-helpful-errors" title="Permanent link">&para;</a></h2>
+<p>Results are for the model, not the user: concise key-value data, enums, numbers. Errors say <strong>what</strong> went wrong and <strong>how to fix it</strong>. See <a href="../best-practices-for-tool-output/">Tool Output</a>.</p>
+<h2 id="7-build-in-safety">7. Build in safety<a class="headerlink" href="#7-build-in-safety" title="Permanent link">&para;</a></h2>
 <ul>
-<li>Ensure default parameter values are consistent across the system. For example, if the default limit for retrieving news is 5, this should be reflected in all system prompts and documentation.</li>
-<li>In short, do not assume any default parameter. If something should have a default value, include it in the system prompt, in the field description, or as a <code>default</code> field in the parameter.</li>
+<li><strong>Confirm</strong> before destructive or irreversible actions (delete, pay, send).</li>
+<li>Make write tools <strong>idempotent</strong> (e.g. a <code>request_id</code>), so a repeated message can't run an action twice.</li>
+<li><strong>Least privilege</strong>: tools run with the user's permissions and the model calls only what the task needs. See <a href="../security/">Security</a>.</li>
 </ul>
-</li>
-</ul>
-<h2 id="4-pick-a-clear-scenario">4. Pick a clear scenario<a class="headerlink" href="#4-pick-a-clear-scenario" title="Permanent link">&para;</a></h2>
-<ul>
-<li>The role of the user talking with the AI assistant must be clear. They could be an end-user (such as a guest renting a hotel room through the system), a manager, a staff member, etc. The functions included must take the user's role into account: if the user is an end-user in a booking system, you MUST NOT include functions for operations the user couldn't reasonably perform, like cancelling another user's booking.</li>
-</ul>
-<h2 id="5-consistent-naming-standards">5. Consistent naming standards<a class="headerlink" href="#5-consistent-naming-standards" title="Permanent link">&para;</a></h2>
-<ul>
-<li>Functions are commonly named with a verb and a noun, such as <code>get_reservations</code>, <code>createUser</code>, <code>get_compliance</code>, <code>add_task</code>, etc. This standard isn't mandatory, but follow it unless you have a good reason not to.</li>
-<li>Pick one case (PascalCase, camelCase, snake_case, etc.) and stick with it, so the whole system is consistent.</li>
-</ul>
-<h2 id="6-safety">6. Safety<a class="headerlink" href="#6-safety" title="Permanent link">&para;</a></h2>
-<ul>
-<li>Confirm before destructive or irreversible actions (delete, pay, send).</li>
-<li>Make write tools idempotent, e.g. with a <code>request_id</code>, so a repeated message can't run an action twice.</li>
-<li>Least privilege: don't call more tools than the task needs.</li>
-</ul>
+<h2 id="8-test-with-real-conversations">8. Test with real conversations<a class="headerlink" href="#8-test-with-real-conversations" title="Permanent link">&para;</a></h2>
+<p>Run the <a href="../adversarial-user-cases/">adversarial cases</a> against your tools before users do. The <a href="https://app.toolcalling.ai/">toolcalling.ai workspace</a> makes this quick. Then measure it with an <a href="../evaluation/">evaluation</a>.</p>
 
 
 
@@ -1839,6 +1884,10 @@
     <div class="md-footer-meta__inner md-grid">
       <div class="md-copyright">
   
+    <div class="md-copyright__highlight">
+      Built by <a href="https://www.reego.ai">reego.ai</a> · Try function calling at <a href="https://toolcalling.ai/">toolcalling.ai</a>
+    </div>
+  
   
     Made with
     <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
@@ -1885,6 +1934,8 @@
     
     
       <script src="../assets/javascripts/bundle.c21346df.min.js"></script>
+      
+        <script src="../javascripts/external-links.js"></script>
       
     
   </body>
